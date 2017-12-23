@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="/libraries/jQuery.js"></script>
+        <script src="/libraries/Ace/build/ace.js"></script>
+        <script src="console.js"></script>
+        <link rel="stylesheet" href="console.css" type="text/css" />
+        
+        <style>
+            html, body{
+                margin: 0px;
+                width: 100%;
+                height: 100%;
+            }
+            .console{
+                width: 800px;
+                height: 50%;
+            }
+        </style>
+        <script>
+            $(function(){
+                var obj = {shit:{stuff:3, test:"yo", poop:{}}};
+                obj.shit.poop = obj;
+                $(".console").console({theme:"monokai", style:"dark"})
+                $(".console").console().output(obj, "test", new ($(".console").console.LineNumber)("https://test.com/test",3));
+                
+                //Additions for console.log implementation implementation
+                window.CUSTOM_JS_CONSOLE = {
+                    log: function(){
+                        $(".console").console().log.apply($(".console").console(), arguments);
+                    },
+                    error: function(){
+                        $(".console").console().error.apply($(".console").console(), arguments);
+                    },
+                    warn: function(){
+                        $(".console").console().warn.apply($(".console").console(), arguments);
+                    },
+                    clear:function(){
+                        $(".console").console().clear();
+                        this.log("Console was cleared")
+                    },
+                    time: function(label){
+                        var now = new Date();
+                        label = label || "default";
+                        this.times = this.times || {};
+                        this.times[label] = now;
+                    },
+                    timeEnd: function(label){
+                        var now = new Date();
+                        label = label || "default";
+                        if(!this.times[label]){
+                            this.log(new PlainText(label + ": 0ms"));
+                        } else {
+                            var diff = now - this.times[label];
+                            this.log(new PlainText(label + ": " + diff + "ms"));
+                            this.times[label]=undefined;
+                        }
+                    },
+                    profile: function(){
+                        try{
+                            console.profile().apply(arguments)
+                        }catch(e){}
+                    },
+                    profileEnd: function(){
+                        try{
+                            console.profileEnd().apply(arguments)
+                        }catch(e){}
+                    }
+                };
+                
+                $(".console").console().onInput = function(text){
+                    //Test addition of console.log etc.
+                    text = text.replace(/\bconsole\b/g,"CUSTOM_JS_CONSOLE");
+                    if(text.match(/test/)) return true;  //just for testing (blocking certain inputs)
+                    
+                    try{
+                        $(".console").console().output(window.eval(text));
+                    }catch(e){
+                        console.error(e);
+                        $(".console").console().error(e);
+                    }
+                }
+            });
+        </script>
+    </head>
+    <div class=console>
+        
+    </div>
+</html>
+  
