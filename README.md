@@ -5,7 +5,7 @@ A recreation of the chrome console interface to be embedded on web pages
 
 
 
-## Todo in order of priority:
+## Todo:
 
 
 * Ability to log generic HTML elements to the console.
