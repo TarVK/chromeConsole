@@ -27,6 +27,10 @@
 }
 
 /*output*/
+.js-console .ace_gutter-cell{
+    padding-left: 0;
+    padding-right: 0;
+}
 .js-console.outputIcon{
     float: left;
     min-width: 24px;
@@ -52,6 +56,9 @@
     position: relative !important;
     z-index: 1;
 }
+.js-console .objectKey{
+    word-break: normal;
+}
 summary.js-console{
     outline: none;
 }
@@ -71,7 +78,7 @@ details.js-console, summary.js-console{
 
 /*fix string indent*/
 .js-console details>.stringOutput>table{
-    padding-left: 22px;
+    padding-left: 23px;
 }
 .js-console .stringOutput{
     margin-left: 0px;
@@ -89,7 +96,7 @@ details.js-console, summary.js-console{
     vertical-align: top;
     padding: 0px;
 }
-.js-console .stringOutput td:first-child{
+.js-console .stringOutput td:first-child:not(:empty){
     padding-right: 7px;
 }
 .js-console .stringOutput td.indent{

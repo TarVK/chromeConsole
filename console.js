@@ -218,7 +218,7 @@
             this.element[0].data = this;
             this.element.mouseup(function(e){
                 if(e.button==2){
-                    This.outputLineData.console.onRightClick(This);
+                    This.outputLineData.console.$trigger("rightClick", This);
                     e.stopImmediatePropagation();
                     e.preventDefault();
                 }
@@ -259,11 +259,18 @@
         for(var i=0; i<keys.length; i++){
             var key = keys[i];
             try{ //try to catch arguments request on function
-                var obj = this.data[key];
+            
+                var obj;
+                if(this.getterObj && key!="__proto__") obj = this.getterObj[key];
+                else obj = this.data[key];
+                
+                // var obj = this.data[key];
                 var dObj = new DataObject(obj, this.outputLineData, this, key);
+                if(key=="__proto__") dObj.getterObj = this.getterObj||this.data;
+                
                 this.element.append(dObj.getElement(getKeyText(key)+colon+" ", 1));
                 if(i<keys.length-1) this.element.append($("<br>"));
-            }catch(e){} 
+            }catch(e){console.log(e);} 
         }
     };
     DataObject.prototype.createObjectName = function(depth){
@@ -280,8 +287,13 @@
         if(depth<1){
             for(var i=0; i<keys.length && previewEl.text().length<maxLength; i++){
                 var key = keys[i];
-                var obj = this.data[key];
+                
+                var obj;
+                if(this.getterObj && key!="__proto__") obj = this.getterObj[key];
+                else obj = this.data[key];
+                
                 var dObj = new DataObject(obj);
+                if(key=="__proto__") dObj.getterObj = this.getterObj||this.data;
                 
                 if(i>0) previewEl.append(comma+" ");
                 previewEl.append(dObj.getPreviewElement(isArray&&key==i?"":htmlEscape(key)+colon+" ", depth+1));
@@ -333,7 +345,8 @@
                     name: "enter",
                     bindKey: {win: "Enter", mac: "Enter"},
                     exec: function(editor){
-                        This.forceInput();
+                        This.$handleInput();
+                        return true;
                     }
                 });
                 this.inputEditor.commands.addCommand({
@@ -341,7 +354,7 @@
                     bindKey: {win: "Up", mac: "Up"},
                     exec: function(editor){
                         if(editor.selection.getCursor().row == 0){
-                            This.prevHistory();
+                            This.$prevHistory();
                             return true;
                         }
                         return false;
@@ -352,7 +365,7 @@
                     bindKey: {win: "Down", mac: "Down"},
                     exec: function(editor){
                         if(editor.selection.getCursor().row == editor.session.getLength()-1){
-                            This.nextHistory();
+                            This.$nextHistory();
                             return true;
                         }
                         return false;
@@ -364,7 +377,7 @@
                     exec: function(editor){
                         var range = editor.selection.getRange();
                         if(range.start.row == range.end.row && range.start.column == range.end.column){
-                            if(This.onTerminate()){
+                            if(This.$trigger("terminate")){
                                 This.warn("Code execution terminated");
                             }
                             return true;
@@ -380,32 +393,42 @@
             });
             
             //create variables needed to manage the console
+            this.data = data;
             this.outputs = [];
             this.inputs = [];
             this.elementLog = [];
             this.historyIndex = 0;
             this.element = element;
-            this.data = data;
             this.maxLogLength = maxLogLength;
             this.maxHistoryLength = maxHistoryLength;
+            this.showIcons = data.showIcons||false;
             this.messageID = 0;
-            this.onInput = data.onInput||function(){};
-            this.onElementRemove = data.onElementRemove||function(){};
-            this.onRightClick = data.onRightClick||function(){};
-            this.onTerminate  = data.onTerminate||function(){};
+            this.listeners = {
+                input: [],
+                elementRemove: [],
+                rightClick: [],
+                terminate: []
+            };
+            //setup passed listeners
+            var keys = Object.keys(this.listeners);
+            for(var i=0; i<keys.length; i++){
+                var key = keys[i];
+                var name = "on"+key[0].toUpperCase()+key.substring(1);
+                if(this.data[name]) this.on(key, this.data[name]);
+            }
         }else{
             if(!this[0].console)
                 this[0].console = new Console(data, this[0]);
             return this[0].console;
         }
     };
-    Console.prototype.forceInput = function(force){
+    Console.prototype.$handleInput = function(force){
         var text = this.inputEditor.getValue();
         var elData = this.input(text);
-        if(!this.onInput(text) || force){
+        if(!this.$trigger("input", text) || force){
             this.inputEditor.setValue("",-1);
         }else{
-            this.removeElement(elData.element);
+            this.$removeElement(elData.element);
         }
     };
     Console.prototype.input = function(text){
@@ -424,12 +447,11 @@
         this.inputs.push(dataObj);
         this.elementLog.push(dataObj);
         this.historyIndex = this.inputs.length;
-        this.removeHistory(); //remove history if the limit has been reached
-        this.removeElement(); //remove elements if the limit has been reached
-        this.lastAddedData = {data:dataObj, element:el};
+        this.$removeHistory(); //remove history if the limit has been reached
+        this.$removeElement(); //remove elements if the limit has been reached
         return dataObj;
     };
-    Console.prototype.print = function(clas){
+    Console.prototype.$print = function(clas){
         var isMaxScroll = $(this.element).scrollTop()>= this.element.scrollHeight-$(this.element).height()-10;
         
         var el = $(outputTemplate);
@@ -442,7 +464,7 @@
         var dataObjects = [];
         for(var i=1; i<arguments.length; i++){
             var arg = arguments[i];
-            if(arg instanceof Console.LineNumber || arg instanceof Console.PlainText){
+            if(arg instanceof Console.LineNumber || arg instanceof Console.PlainText || arg instanceof Console.HtmlElement){
                 out.append(arg.element);
             }else{
                 var dataObject = new DataObject(arg, dataObj);
@@ -452,6 +474,8 @@
         }
         
         el.addClass(clas);
+        if(this.showIcons) el.addClass("ace_gutter-cell ace_"+(clas=="warn"?"warning":clas));
+        
         this.outputEl.append(el);
         
         if(isMaxScroll) $(this.element).scrollTop(this.element.scrollHeight); //scroll all the way down if it was all the way down
@@ -459,88 +483,113 @@
         dataObj.dataObjects = dataObjects;
         this.outputs.push(dataObj);
         this.elementLog.push(dataObj);
-        this.removeElement(); //remove elements if the limit has been reached
-        this.lastAddedData = {data:dataObj, element:el};
+        this.$removeElement(); //remove elements if the limit has been reached
         return dataObj;
     };
     Console.prototype.output = function(){
         var args = Array.from(arguments);
         args.unshift("return");
-        var ret = this.print.apply(this, args);
+        var ret = this.$print.apply(this, args);
         var el = ret.element;
         el.append("<div class='"+dividerClass+"'></div>");
         return ret;
     };
     Console.prototype.log = function(){
+        var prevPrint = this.$getLastPrint();
         //increment log counter code
         {
             outer:
-            if(this.lastLog && this.lastAddedData.element.is(".log") && arguments.length==this.lastLog.length){
-                //check if arguments are identical
-                for(var i=0; i<arguments.length; i++){
-                    var arg = arguments[i];
-                    var lastArg = this.lastLog[i];
-                    if(arg==lastArg) continue;
-                    if(arg instanceof Console.LineNumber && lastArg instanceof Console.LineNumber 
-                        && arg.element.text()==lastArg.element.text()) continue;
-                    break outer;
+            if(prevPrint && prevPrint.element.is(".log")){
+                if(arguments.length==prevPrint.arguments.length){
+                    //check if arguments are identical
+                    for(var i=0; i<arguments.length; i++){
+                        var arg = arguments[i];
+                        var lastArg = prevPrint.arguments[i];
+                        if(arg==lastArg) continue;
+                        if(arg instanceof Console.LineNumber && lastArg instanceof Console.LineNumber 
+                            && arg.element.text()==lastArg.element.text()) continue;
+                        break outer;
+                    }
+                    
+                    //increment counter
+                    var icon = prevPrint.element.find(".outputIcon");
+                    icon.addClass("number");
+                    var number = (parseInt(icon.text())||1)+1;
+                    icon.text(number);
+                    prevPrint.element.find(".outputData").css("max-width", "calc(100% - "+icon.outerWidth(true)+"px)");
+                    return;
                 }
-                
-                var icon = this.lastAddedData.element.find(".outputIcon");
-                icon.addClass("number");
-                var number = (parseInt(icon.text())||1)+1;
-                icon.text(number);
-                this.lastAddedData.element.find(".outputData").css("max-width", "calc(100% - "+icon.outerWidth(true)+"px)");
-                return;
             }
-            this.lastLog = Array.from(arguments);
         }
-        
-        var insertLine = this.lastAddedData && this.lastAddedData.element.is(".inputLine");
             
         var args = Array.from(arguments);
-        for(var i=0; i<args.length; i++)
-            if(typeof(args[i])=="string" && args[i].length>0) args[i] = new Console.PlainText(args[i]);
+        this.$makeStringsPlain(args);
         args.unshift("log");
-        var ret = this.print.apply(this, args);
-        var el = ret.element;
         
-        if(insertLine) el.prepend("<div class='"+dividerClass+"'></div>");
-        el.append("<div class='"+dividerClass+"'></div>");
+        var ret = this.$print.apply(this, args);
+        ret.arguments = Array.from(arguments); //append arguments for increment log counter process
+        
+        this.$addDivider(ret.element);
         
         return ret;
     };
     Console.prototype.error = function(){
         var args = Array.from(arguments);
-        for(var i=0; i<args.length; i++)
-            if(typeof(args[i])=="string" && args[i].length>0) args[i] = new Console.PlainText(args[i]);
+        this.$makeStringsPlain(args);
         args.unshift("error");
-        return this.print.apply(this, args);
+        return this.$print.apply(this, args);
     };
     Console.prototype.warn = function(){
         var args = Array.from(arguments);
-        for(var i=0; i<args.length; i++)
-            if(typeof(args[i])=="string" && args[i].length>0) args[i] = new Console.PlainText(args[i]);
+        this.$makeStringsPlain(args);
         args.unshift("warn");
-        return this.print.apply(this, args);
+        return this.$print.apply(this, args);
     };
     Console.prototype.info = function(){
         var args = Array.from(arguments);
-        for(var i=0; i<args.length; i++)
-            if(typeof(args[i])=="string" && args[i].length>0) args[i] = new Console.PlainText(args[i]);
+        this.$makeStringsPlain(args);
         args.unshift("info"); 
-        return this.print.apply(this, args);
+        return this.$print.apply(this, args);
     };
     Console.prototype.clear = function(){
         while(this.elementLog.length>0){
-            if(!this.removeElement(0)) break;
+            if(!this.$removeElement(0)) break;
         }
         return this;
     };
-    Console.prototype.removeElement = function(element){
+    Console.prototype.time = function(label){
+        var now = new Date();
+        if(!this.timers) this.timers={};
+        this.timers[label||"default"] = now;
+    };
+    Console.prototype.timeEnd = function(label){
+        var now = new Date();
+        if(!this.timers) this.timers={};
+        
+        var args = Array.from(arguments);
+        if(!label || typeof(label)!="string"){
+            label="default";
+        }else{
+            args.shift();
+        }
+        this.$makeStringsPlain(args);
+        
+        if(!this.timers[label]){
+            args.unshift("timeEnd", new Console.PlainText(label+": 0ms"));
+        }else{
+            var diff = now - this.timers[label];
+            args.unshift("timeEnd", new Console.PlainText(label+": "+diff+"ms"));
+            delete this.timers[label];
+        }
+        
+        var ret = this.$print.apply(this, args);
+        this.$addDivider(ret.element);
+        return ret;
+    };
+    Console.prototype.$removeElement = function(element){
         if(element==null){ //remove until below threshold
             while(this.elementLog.length>this.maxLogLength){
-                if(!this.removeElement(0)) break;
+                if(!this.$removeElement(0)) break;
             }
             return;
         }
@@ -576,7 +625,7 @@
         
         
         if(obj){
-            if(this.onElementRemove(obj)) return;
+            if(this.$trigger("elementRemove", obj)) return;
             
             if(obj.dataObjects){//output object
                 var index = this.outputs.indexOf(obj);
@@ -592,10 +641,10 @@
             return true;
         }
     };
-    Console.prototype.removeHistory = function(element){
+    Console.prototype.$removeHistory = function(element){
         if(element==null){ //remove untill below threshold
             while(this.inputs.length>this.maxHistoryLength){
-                if(!this.removeHistory(0)) break;
+                if(!this.$removeHistory(0)) break;
             }
             return;
         }
@@ -623,8 +672,8 @@
                 this.historyIndex--;
             return true;
         }
-    }
-    Console.prototype.prevHistory = function(){
+    };
+    Console.prototype.$prevHistory = function(){
         if(this.historyIndex == this.inputs.length)
             this.tempHist = this.inputEditor.getValue();
             
@@ -638,7 +687,7 @@
         }
         return this;
     };
-    Console.prototype.nextHistory = function(){
+    Console.prototype.$nextHistory = function(){
         this.historyIndex = Math.min(this.historyIndex+1, this.inputs.length);
         
         if(this.historyIndex == this.inputs.length){
@@ -649,6 +698,63 @@
                 this.inputEditor.setValue(h.text, 1);
         }
         return this;
+    };
+    Console.prototype.$getLastPrint = function(){
+        return this.elementLog[this.elementLog.length-1];
+    };
+    Console.prototype.$makeStringsPlain = function(args){
+        for(var i=0; i<args.length; i++)
+            if(typeof(args[i])=="string" && args[i].length>0) 
+                args[i] = new Console.PlainText(args[i]);
+    };
+    Console.prototype.$addDivider = function(element){
+        var data = this.elementLog[this.elementLog.length-2];
+        if(data && data.element.is(".inputLine")){
+            element.prepend("<div class='"+dividerClass+"'></div>");
+        }
+        element.append("<div class='"+dividerClass+"'></div>");
+    };
+    // console events
+    Console.prototype.onInput = function(func, remove){
+        this.on("input", func, remove)
+    };
+    Console.prototype.onElementRemove = function(func, remove){
+        this.on("elementRemove", func, remove)
+    };
+    Console.prototype.onRightClick = function(func, remove){
+        this.on("rightClick", func, remove)
+    };
+    Console.prototype.onTerminate = function(func, remove){
+        this.on("terminate", func, remove)
+    };
+    Console.prototype.on = function(event, func, remove){
+        var listeners = this.listeners[event];
+        if(listeners){
+            if(remove){
+                var index = listeners.indexOf(func);   
+                if(index>=0) listeners.splice(index, 1);
+            }else{
+                listeners.push(func);
+            }
+        }
+    };
+    Console.prototype.$trigger = function(event){
+        var listeners = this.listeners[event];
+        if(listeners){
+            
+            var args = Array.from(arguments);
+            args.shift();
+            
+            var out = undefined;
+            for(var i=0; i<listeners.length; i++){
+                var listener = listeners[i];
+                var ret = listener.apply(this, args);
+                if(ret!==undefined) out = ret;
+            }
+            
+            return out;
+        }
+        return false;
     };
     
     // special log input objects
@@ -680,9 +786,15 @@
         this.file = file;
         this.lineNumber = lineNumber;
     };
+    Console.prototype.LineNumber = Console.LineNumber;
     Console.PlainText = function(text){
         this.text = text;
         this.element = $("<span class='js-console plainText'>"+htmlEscape(text, true)+"</span>");
     };
+    Console.prototype.PlainText = Console.PlainText;
+    Console.HtmlElement = function(element){
+        this.element = element;
+    };
+    Console.prototype.HtmlElement = Console.HtmlElement;
     $.fn.console = Console;
 })();

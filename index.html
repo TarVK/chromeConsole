@@ -5,7 +5,7 @@
         <script src="/libraries/Ace/build/ace.js"></script>
         <script src="/console.js"></script>
         <link rel="stylesheet" href="/console.css" type="text/css" />
-        
+
         <style>
             html, body{
                 width: 100%;
@@ -25,11 +25,14 @@
             }
         </style>
         <script>
+            window.randomText = "No Text Loaded Yet, With Fancy Capitals";
             function updateURLText(url){
                 var req = new XMLHttpRequest();
-                req.open("GET", "https://cors-anywhere.herokuapp.com/"+url, false);
+                req.open("GET", "https://cors-anywhere.herokuapp.com/"+url, true);
                 req.send();
-                window.randomText = req.response;
+                req.onreadystatechange = function(){
+                    window.randomText = req.response;
+                };
             }
             
             function copyToClipBoard(text){
@@ -44,18 +47,20 @@
             $(function(){
                 updateURLText(document.getElementById("WebsiteURL").value);
                 
+                
                 var cons = $(".console").console({
                     mode: "r",
                     onInput: function(text){
                         try{
-                            var m = text.match(/\/(.*)\/(.*)/);
+                            var m = text.match(/^\/(.*)\/(.*)$/);
                             var regex;
                             if(m) regex = new RegExp(m[1], m[2]);
                             else regex = new RegExp(text, "g");
                             
                             var match;
                             var out = [];
-                            for(var i=0; i<100 && (match = regex.exec(window.randomText)); i++)
+                            for(var i=0; i<100 && (i<1 || regex.global) 
+                                    && (match = regex.exec(window.randomText)); i++)
                                 out.push(match);
                                 
                             this.output(out);
@@ -64,27 +69,29 @@
                         }
                     },
                     onRightClick: function(obj){
-                        var out = "[";
-                        if(typeof(obj.data)=="string") out = obj.data;
-                        else if(typeof(obj.data[0])=="string") out = obj.data[0];
-                        else{
-                            for(var i=0; i<obj.data.length; i++)
-                                if(typeof(obj.data[i][0])=="string") 
-                                    out += obj.data[i][0]+",";
-                            out = out.substring(0, out.length-1) + "]";
-                        }
-                        
+                        var out = JSON.stringify(obj.data);
                         copyToClipBoard(out);
-                        this.info("The following has be copied to your clipboard:\n"+out);
+                        this.info(
+                            "The following has be copied to your clipboard:\n" + 
+                            (out.length > 105 ? out.substr(0,105) + "...": out)
+                        );
                     }
                 });
+                
+                cons.info(
+                    "Type in a regular expression to search for it in the above website.\n"+
+                    "E.G. '\"((?:.|\\s)+?)\"'\n"+
+                    "You can also right click on returned values to copy them to the clipboard!"
+                );
+                cons.inputEditor.insert("\"((?:.|\\s)+?)\"");
             });
         </script>
     </head>
     <body>
         <div>
             <span>Select site: </span>
-            <input type=field id="WebsiteURL" size=50 value="https://content.nunction.net/humor/alice-and-bob.txt" />
+            <input type=field id="WebsiteURL" onBlur=updateURLText(this.value) size=50 
+                value="https://content.nunction.net/humor/alice-and-bob.txt" />
         </div>
         <div class="console"></div>
     </body>
