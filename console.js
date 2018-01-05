@@ -270,7 +270,7 @@
                 
                 this.element.append(dObj.getElement(getKeyText(key)+colon+" ", 1));
                 if(i<keys.length-1) this.element.append($("<br>"));
-            }catch(e){console.log(e);} 
+            }catch(e){} 
         }
     };
     DataObject.prototype.createObjectName = function(depth){
