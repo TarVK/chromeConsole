@@ -57,7 +57,7 @@
                         if(elData){
                             elData.workerDataID = data.returnDataID;
                         }else if(data.cmd=="log"){ //no message was added, counter was incremented
-                            This.removeWorkerReturnData(data.returnDataID);
+                            This.$removeWorkerReturnData(data.returnDataID);
                         }
                         
                         if(data.ret){
