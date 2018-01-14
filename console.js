@@ -317,6 +317,7 @@
     //console interface
     var Console = function(data, element){
         if(Object.keys(this).length==0){
+            if(!data) data={};
             var This = this;
             var el = $(element);
             el.html(consoleTemplate);
