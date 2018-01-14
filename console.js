@@ -764,6 +764,7 @@
             nodes.shift();
             var node = nodes[Math.min(nodes.length-1, file)];
             trace = node;
+            file = "";
         }
         
         file = htmlEscape(file||"");
