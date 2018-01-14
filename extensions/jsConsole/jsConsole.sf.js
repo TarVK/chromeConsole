@@ -286,6 +286,7 @@ if(isWorker)
 if(!isWorker)
 (function(){
     $.fn.jsConsole = function(data){
+        if(!data) data={};
         var console = this.console(data);
         
         var LineNumber = $.fn.console.LineNumber;
