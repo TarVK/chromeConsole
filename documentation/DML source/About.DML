@@ -1,0 +1,75 @@
+[head]
+    [html]
+        <link rel="icon" type="image/png" href="resources/_Icon.png">
+        <style>
+            .button {
+                width:100%;
+                height:30px;
+                font-size:16pt;
+                line-height: 30px;
+                padding-left: 5px;
+            }
+            
+            .button:hover {
+                background-color:rgb(240,240,240);
+            }
+            
+            .button:active {
+                background-color:rgb(230,230,230);
+            }
+            
+            .websiteBrowser > a {
+                color: black;
+                text-decoration: none;
+            }
+            
+            .websiteBrowser > a:active {
+                color:black;
+            }
+            .websiteBrowser > a:hover {
+                background-color:rgb(240,240,240);
+            }
+        </style>
+    [/html]
+[/head]
+[siteBrowser]
+    [center]
+        [img width=60% styled=false hasPopup=false]resources/_Icon.png[/img]
+    [/center]
+    `
+    `
+    [link url="About.html"          ][button]About          [/button][/link]
+    [link url="Embedding Guide.html"][button]Embedding Guide[/button][/link]
+    [link url="API Reference.html"  ][button]API Reference  [/button][/link]
+[/siteBrowser]
+
+# Chrome Console
+## An embeddable console for any language.
+
+Console.js is an open-source embeddable console, written in JavaScript.
+It attempts to match most of the features provided by Chrome's JavaScript console. The end goal is to
+make it compatible with all major browsers. It can be easily embedded in any web page or browser application
+like [NW.js][https://nwjs.io/] and [electron][https://electronjs.org/].`
+`
+[[ JavaScript Console
+[center]
+    [iframe url="demos/jsConsole-demo.html" width="800px" height:"300px" styled=true][/iframe]`
+[/center]
+
+Console.js doesn't contain any code which handles the user input. The user input is sent to your application
+after it is entered into the console. You process the users inputs and return what the output is. The Console API
+will handle how the outputs you provide are displayed. For instance, objects will be collapsable and error/warning/info
+messages will be formatted with red/yellow/blue backgrounds.`
+`
+[[ Console + Text area for searching a site with regex
+[center]
+    [iframe url="demos/interface-demo.html" width="800px" height:"300px" styled=true][/iframe]`
+[/center]
+
+If you want to embed a fully working JavaScript console into your website/application you can load the
+[link url="Embedding%20Guide#JavaScript%20Console"]jsConsole.js script[/link]. The inputted code will run 
+in a worker, protecting the DOM from being changed by users and preventing the page from freezing due
+to infinite loops. You can also break out of infinite loops with Ctrl+C on Windows and Linux, and Cmd+C on Mac.`
+`
+The console uses AJAX's [link url="https://ace.c9.io/"]Ace Editor[/link] to provide custom syntax 
+highlighting, custom themes and a powerful API to assist web/application development.

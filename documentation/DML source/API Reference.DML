@@ -1,0 +1,831 @@
+[[ https://empirler-thegunmaster.c9users.io/documentation/console/API%20Reference.DML
+[head]
+    [html]
+        <link rel="icon" type="image/png" href="resources/_Icon.png">
+        <style>
+            .button {
+                width:100%;
+                height:30px;
+                font-size:16pt;
+                line-height: 30px;
+                padding-left: 5px;
+            }
+            
+            .button:hover {
+                background-color:rgb(240,240,240);
+            }
+            
+            .button:active {
+                background-color:rgb(230,230,230);
+            }
+            
+            .websiteBrowser > a {
+                color: black;
+                text-decoration: none;
+            }
+            
+            .websiteBrowser > a:active {
+                color:black;
+            }
+            .websiteBrowser > a:hover {
+                background-color:rgb(240,240,240);
+            }
+            
+            .headerCode {
+                font-family: 'Monaco', 'Menlo', 'Consolas', 'source-code-pro', 'Ubuntu Mono', 'Droid Sans Mono', monospace;
+                display:inline-block;
+                background-color:#ffffff;
+                border-radius:2px;
+                padding: 0 2px;
+            }
+        </style>
+    [/html]
+[/head]
+[siteBrowser]
+    [center]
+        [img width=60% styled=false hasPopup=false]resources/_Icon.png[/img]
+    [/center]
+    `
+    `
+    [link url="About.html"          ][button]About           [/button][/link]
+    [link url="Embedding Guide.html"][button]Embedding Guide [/button][/link]
+    [link url="API Reference.html"  ][button]API Reference   [/button][/link]
+[/siteBrowser]
+
+
+    
+
+
+[linkDictionary]
+    console.time()     = #API_Functions_and_Classes>Console_class>Methods>time()
+    console.timeEnd()  = #API_Functions_and_Classes>Console_class>Methods>timeEnd()
+    console.info()     = #API_Functions_and_Classes>Console_class>Methods>info()
+    console.warn()     = #API_Functions_and_Classes>Console_class>Methods>warn()
+    console.error()    = #API_Functions_and_Classes>Console_class>Methods>error()
+    logging behaviours = #Console Behaviours>Logging data
+    $Print()           = #API_Functions_and_Classes>Console_class>Methods>$print()
+    PlainText          = #API_Functions_and_Classes>Logging_classes>PlainText_class
+    LineNumber         = #API_Functions_and_Classes>Logging_classes>LineNumber_class
+    htmlElement        = #API_Functions_and_Classes>Logging_classes>htmlElement_class
+    Console            = #API_Functions_and_Classes>Console_class
+    Console.Events     = #API_Functions_and_Classes>Console_class>Events
+    
+    [[ GENERATE LINK DICTIONARY:
+    [[     var s="";
+    [[     $(".pageBrowser").find(".name").each(function(){
+    [[         s += this.innerText.trim().padEnd(25) + "= #" + this.parentElement.id + "\n"
+    [[     })
+    [[     console.log(s)
+    [[
+    [[ We realise that Properties, Events and Methods are overwritten consistently, however this way the generation code
+    [[ stays clean.
+    
+    API Functions and Classes= #API_Functions_and_Classes
+    Instantiation function   = #API_Functions_and_Classes>Instantiation_function
+    List of console options  = #API_Functions_and_Classes>Instantiation_function>List_of_console_options
+    theme                    = #API_Functions_and_Classes>Instantiation_function>List_of_console_options>theme
+    style                    = #API_Functions_and_Classes>Instantiation_function>List_of_console_options>style
+    mode                     = #API_Functions_and_Classes>Instantiation_function>List_of_console_options>mode
+    showIcons                = #API_Functions_and_Classes>Instantiation_function>List_of_console_options>showIcons
+    onInput                  = #API_Functions_and_Classes>Instantiation_function>List_of_console_options>onInput
+    onElementRemove          = #API_Functions_and_Classes>Instantiation_function>List_of_console_options>onElementRemove
+    onRightClick             = #API_Functions_and_Classes>Instantiation_function>List_of_console_options>onRightClick
+    onTerminate              = #API_Functions_and_Classes>Instantiation_function>List_of_console_options>onTerminate
+    onWorkerMessage          = #API_Functions_and_Classes>Instantiation_function>List_of_console_options>onWorkerMessage
+    worker                   = #API_Functions_and_Classes>Instantiation_function>List_of_console_options>worker
+    forwardOutput            = #API_Functions_and_Classes>Instantiation_function>List_of_console_options>forwardOutput
+    Console class            = #API_Functions_and_Classes>Console_class
+    Properties               = #API_Functions_and_Classes>Console_class>Properties
+    inputEditor              = #API_Functions_and_Classes>Console_class>Properties>inputEditor
+    element                  = #API_Functions_and_Classes>Console_class>Properties>element
+    maxHistoryLength         = #API_Functions_and_Classes>Console_class>Properties>maxHistoryLength
+    maxLogLength             = #API_Functions_and_Classes>Console_class>Properties>maxLogLength
+    showIcons                = #API_Functions_and_Classes>Console_class>Properties>showIcons
+    inputs                   = #API_Functions_and_Classes>Console_class>Properties>inputs
+    outputs                  = #API_Functions_and_Classes>Console_class>Properties>outputs
+    elementLog               = #API_Functions_and_Classes>Console_class>Properties>elementLog
+    data                     = #API_Functions_and_Classes>Console_class>Properties>data
+    Events                   = #API_Functions_and_Classes>Console_class>Events
+    on()                     = #API_Functions_and_Classes>Console_class>Events>on()
+    onInput()                = #API_Functions_and_Classes>Console_class>Events>onInput()
+    onRightClick()           = #API_Functions_and_Classes>Console_class>Events>onRightClick()
+    onTerminate()            = #API_Functions_and_Classes>Console_class>Events>onTerminate()
+    onElementRemove()        = #API_Functions_and_Classes>Console_class>Events>onElementRemove()
+    Methods                  = #API_Functions_and_Classes>Console_class>Methods
+    log()                    = #API_Functions_and_Classes>Console_class>Methods>log()
+    info()                   = #API_Functions_and_Classes>Console_class>Methods>info()
+    warn()                   = #API_Functions_and_Classes>Console_class>Methods>warn()
+    error()                  = #API_Functions_and_Classes>Console_class>Methods>error()
+    output()                 = #API_Functions_and_Classes>Console_class>Methods>output()
+    clear()                  = #API_Functions_and_Classes>Console_class>Methods>clear()
+    input()                  = #API_Functions_and_Classes>Console_class>Methods>input()
+    time()                   = #API_Functions_and_Classes>Console_class>Methods>time()
+    timeEnd()                = #API_Functions_and_Classes>Console_class>Methods>timeEnd()
+    $print()                 = #API_Functions_and_Classes>Console_class>Methods>$print()
+    $handleInput()           = #API_Functions_and_Classes>Console_class>Methods>$handleInput()
+    $prevHistory()           = #API_Functions_and_Classes>Console_class>Methods>$prevHistory()
+    $nextHistory()           = #API_Functions_and_Classes>Console_class>Methods>$nextHistory()
+    $addDivider()            = #API_Functions_and_Classes>Console_class>Methods>$addDivider()
+    $getLastPrint()          = #API_Functions_and_Classes>Console_class>Methods>$getLastPrint()
+    $makeStringsPlain()      = #API_Functions_and_Classes>Console_class>Methods>$makeStringsPlain()
+    $trigger()               = #API_Functions_and_Classes>Console_class>Methods>$trigger()
+    $removeElement()         = #API_Functions_and_Classes>Console_class>Methods>$removeElement()
+    $removeHistory()         = #API_Functions_and_Classes>Console_class>Methods>$removeHistory()
+    JavaScript Extension     = #API_Functions_and_Classes>JavaScript_Extension
+    Properties               = #API_Functions_and_Classes>JavaScript_Extension>Properties
+    worker                   = #API_Functions_and_Classes>JavaScript_Extension>Properties>worker
+    workerFile               = #API_Functions_and_Classes>JavaScript_Extension>Properties>workerFile
+    Events                   = #API_Functions_and_Classes>JavaScript_Extension>Events
+    onWorkerMessage()        = #API_Functions_and_Classes>JavaScript_Extension>Events>onWorkerMessage()
+    Methods                  = #API_Functions_and_Classes>JavaScript_Extension>Methods
+    setForwardOutput()       = #API_Functions_and_Classes>JavaScript_Extension>Methods>setForwardOutput()
+    setupWorker()            = #API_Functions_and_Classes>JavaScript_Extension>Methods>setupWorker()
+    terminateWorker()        = #API_Functions_and_Classes>JavaScript_Extension>Methods>terminateWorker()
+    Logging classes          = #API_Functions_and_Classes>Logging_classes
+    PlainText class          = #API_Functions_and_Classes>Logging_classes>PlainText_class
+    Properties               = #API_Functions_and_Classes>Logging_classes>PlainText_class>Properties
+    text                     = #API_Functions_and_Classes>Logging_classes>PlainText_class>Properties>text
+    element                  = #API_Functions_and_Classes>Logging_classes>PlainText_class>Properties>element
+    LineNumber class         = #API_Functions_and_Classes>Logging_classes>LineNumber_class
+    Properties               = #API_Functions_and_Classes>Logging_classes>LineNumber_class>Properties
+    file                     = #API_Functions_and_Classes>Logging_classes>LineNumber_class>Properties>file
+    lineNumber               = #API_Functions_and_Classes>Logging_classes>LineNumber_class>Properties>lineNumber
+    element                  = #API_Functions_and_Classes>Logging_classes>LineNumber_class>Properties>element
+    htmlElement class        = #API_Functions_and_Classes>Logging_classes>htmlElement_class
+    Properties               = #API_Functions_and_Classes>Logging_classes>htmlElement_class>Properties
+    element                  = #API_Functions_and_Classes>Logging_classes>htmlElement_class>Properties>element
+[/linkDictionary]
+
+
+
+# API Functions and Classes
+
+## Instantiation function
+`
+    `### Syntax
+        
+        `js $(element).console(options)`
+        `
+        `
+        
+        `element`:
+            Can either be: 
+                * A html element`
+                * A css selector of the elements to be effected`
+                * A string of html. E.G. "<div></div>"`
+            See [link url="http://api.jquery.com/"]jQuery documentation[/link]
+        `
+        `options`:
+            A JavaScript object containing options which
+            control how the console looks and behaves. See [link]List of console options[/link].
+    `
+    `
+    `### Return value
+        An instance of the `Console` class.
+    `
+    `
+    `### Description
+        
+        This function converts the element provided into a console and returns an instance of the `Console` class. 
+        The console is instantiated with a set of options provided by the developer. 
+        These options effect how the console looks and how it acts. A full list of options is available below.`
+        
+        When a console has already been initialised on the element provided, the function will return the current instance of the console instantiated on this element. 
+        You can also retrieve the instantiated object by accessing the console property of the html element itself. E.G. 
+        ```js
+            $(el).console(); //console setup on the element 'el'
+            
+            var cons = el.console; //console access
+        ```
+        
+    `    
+    `    
+    ### List of console options
+        `
+        #### `theme`
+            `##### Example
+                [c language="javascript"]"monokai"[/c]
+            `##### Description
+                A string specifying an ace theme, list of possible themes: [link url='https://github.com/ajaxorg/ace/tree/master/lib/ace/theme']github[/link].`
+        
+        `
+        
+        #### `style`
+            `##### Example
+                [c language="javascript"]"dark"[/c]
+            `##### Description
+                Either "light" or "dark" which adds some colors that couldn't be found in the ace theme.`
+        
+        `
+        `
+        #### `mode`
+            `##### Example
+                [c language="javascript"]"javacript"[/c]
+            `##### Description
+                A string specifying an ace language mode, list of possible modes: [link url='https://github.com/ajaxorg/ace/tree/master/lib/ace/mode']github[/link].`
+        
+        `
+        `
+        #### `showIcons`
+            `##### Example
+                [c language="javascript"]true[/c]
+            `##### Description
+                A boolean determining whether icons should be shown in the left area for special outputs like errors.`
+        
+        `
+        `
+        #### `onInput` 
+            `##### Example
+                [c language="javascript"]
+                    function(text){ 
+                        return canceled; 
+                    }
+                [/c]
+            `##### Description
+                The callback function to be passed as an argument to the [link]onInput()[/link] method of the [link]Console[/link] class.
+        
+        `
+        `
+        #### `onElementRemove`
+            `##### Example
+                [c language="javascript"]
+                    function(obj){ 
+                        return canceled; 
+                    }
+                [/c]
+            `##### Description
+                The callback function to be passed as an argument to the [link]onElementRemove()[/link] method of the [link]Console[/link] class.
+        
+        `
+        `
+        #### `onRightClick`
+            `##### Example
+                [c language="javascript"]function(obj){}[/c]
+            `##### Description
+                The callback function to be passed as an argument to the [link]onRightClick()[/link] method of the [link]Console[/link] class.
+        
+        `
+        `
+        #### `onTerminate`
+            `##### Example
+                [c language="javascript"]
+                    function(){ 
+                        return terminated; 
+                    }
+                [/c]
+            `##### Description
+                The callback function to be passed as an argument to the [link]onTerminate()[/link] method of the [link]Console[/link] class.
+        `
+        `
+        #### `onWorkerMessage`
+            `##### Example
+                [c language="javascript"]
+                    function(event, data){}
+                [/c]
+            `##### Description
+                -*jsConsole only*`
+                The callback function to be passed as an argument to the [link]onWorkerMessage()[/link] method of the [link]Console[/link] class.
+        `
+        `
+        #### `worker`
+            `##### Example
+                [c language="javascript"]"worker.js"[/c]
+            `##### Description
+                -*jsConsole only*`
+                A string linking to the location where the code for your worker is held.`
+        
+        `
+        `
+        #### `forwardOutput`
+            `##### Example
+                [c language="javascript"]"error,warn"[/c]
+            `##### Description
+                -*jsConsole only*`
+                The forwardOutput property allows you to dump error/warning/informational data to the browser's console as well as
+                the console implemented by Console.js. forwardOutput is to contain a comma delimited string of message types to
+                forward to the browser's console. Alternatively, if set to true all messages will be forwarded to the browser's console.
+                Similarly if set to false, none are.`
+        `
+    `
+----
+    
+## [headerCode]Console[/headerCode] class
+`
+`
+    ### Properties
+        #### `inputEditor`
+            The ace editor object for the input element.`
+            ```js
+                con.inputEditor.setValue("console.log('hello world')")
+            ```
+        #### `element`
+            The html element containing the console.
+        #### `maxHistoryLength`
+            The maximum number of inputs the user can make before old history is deleted. 
+        #### `maxLogLength`
+            The maximum number of elements within the console's visible history, before elements are removed.
+        #### `showIcons`
+            When this property is set to true, [link]console.info()[/link], [link]console.warn()[/link] and [link]console.error()[/link] will display an icon next to the outputted text.
+        #### `inputs`
+            A history of all strings, elements and other linked data inputted by the user into the console.
+        #### `outputs`
+            A history of all strings, elements and other linked data outputted by the console.
+        #### `elementLog`
+            A combination of inputs and outputs.
+        #### `data`
+            The data which was used to initialise the console. E.G. Ace mode, Console style etc.
+    ### Events
+    `
+        All events and listeners can be found in the listeners object in the console class.
+        Each property of the listeners object is an array of functions which can be used
+        to listen to specific events used by the console.`
+        `
+        To add a listener, we advise you use one of the specialised functions below. 
+        
+    `
+        #### `on()`
+            `##### Parameters
+                type, callback, remove
+                `
+                    type`
+                        The name of the event to listen to. E.G. "input", "rightClick", ...`
+                    callback`
+                        The function to call when an event is fired.`
+                    remove`
+                        If this is set to true then the listener is removed, instead of added.`
+            `##### Description
+                A dynamic alias for all of the below functions.`
+        #### `onInput()`
+            `##### Parameters
+                callback, remove
+                `
+                    callback`
+                        The function to call when an event is fired.`
+                    remove`
+                        If this is set to true then the listener is removed, instead of added.`
+            `##### Description
+                [[ ATTENTION REQUIRED: Tar, why do we return true? What happens when you return false? xD Anything different?, -yes.
+                Listen to the event fired when a user inputs some data into the console. 
+                The callback should return a boolean, indicating if the input was handled.
+                If false is returned, the user's input text won't be cleared, and won't be added to the [link]history[/link] nor [link]elementLog[/link]. 
+                The callback will be called with the data the user inputted. For example:`
+                `
+                ```js
+                    con.onInput(function(text){
+                        this.log(text);
+                        return true;
+                    })
+                ```
+                `
+        #### `onRightClick()`
+            `##### Parameters
+                callback, remove
+                `
+                    callback`
+                        The function to call when an event is fired.`
+                    remove`
+                        If this is set to true then the listener is removed, instead of added.`
+            `##### Description
+                [[ ATTENTION REQUIRED: Is it correct that the callback parameter is an html Element? -nope.
+                Creates a listener which fires when a user right clicks on a logged object. 
+                The callback is called with the clicked object data as an argument, this object data is the container for the clicked object, the element showing the object and some additional data.
+                ```js
+                    con.onRightClick(function(obj){
+                        this.log(obj);
+                    });
+                ```
+                `
+        #### `onTerminate()`
+            `##### Parameters
+                callback, remove
+                `
+                    callback`
+                        The function to call when an event is fired.`
+                    remove`
+                        If this is set to true then the listener is removed, instead of added.`
+            `##### Description
+                Creates a listener which fires when the console terminates.`
+                If the callback returns true, indicating that termination was successfull, a message will be shown in the console.
+            `
+        #### `onElementRemove()`
+            `##### Parameters
+                callback, remove
+                `
+                    callback`
+                        The function to call when an event is fired.`
+                    remove`
+                        If this is set to true then the listener is removed, instead of added.`
+            `##### Description
+                Creates a listener which fires when an element is removed from the console.`
+                The callback is called with the same data as is stored in the elementLog, which also contains the actual element.
+                If the callback returns true, the removal of the element is cancelled. This does mean that any prior elements can't automatically be removed either however, so it is not recommeneded to return true unless you know what you are doing.
+                ```js
+                    con.onElementRemove(function(removedElementData){
+                        this.log(removedElementData) 
+                    })
+                ```
+    ### Methods
+        `
+        `
+        #### `log()`
+            `##### Parameters
+                obj1,obj2,obj3,...
+                `
+                    A list of JavaScript objects/strings to output. The string representations of each of these objects
+                    are appended together in the order listed and outputted. Please be warned that if you log
+                    objects using the JavaScript extension provided the value of the object *at that moment*
+                    will be logged.`
+                    `
+                    When making your own extensions this behaviour can be altered by logging a Proxy object
+                    which will get the values whenever a branch is opened in the console.`
+            `##### Description 
+                This method tries to emulate the log functionality of the chrome console. However as of
+                writing this, not all functionalities have been implemented. Known examples are listed
+                below:`
+                    
+                    * String substitution is not yet implemented.`
+                    * Color formatting with "%c" is not yet implemented.`
+                `
+                If the same object is logged multiple times in a row, then the that object is "stacked"
+                displaying a count next to the message, representing the number of times log was called
+                for that specific object. E.G. Running the following JavaScript:`
+                `
+                [code language="javascript"]
+                    var con = $('.console').console()
+                    con.clear()
+                    for(var i=0;i<4;i++){
+                        con.log("stuff")
+                    }
+                [/code]
+                `
+                `
+                Will display the following:`
+                [img width=100 styled=false hasPopup=false]resources/ConsoleLogCount.png[/img]
+                `
+                For an explanation of logging behaviours, see [link]$print[/link].
+        `
+        #### `info()`
+            `##### Parameters
+                obj1,obj2,obj3,...
+                `
+                    A list of JavaScript objects/strings to output.`
+            `##### Description
+                Outputs an informational message to the console. A small "i" icon is displayed 
+                next to these items and the item is also displayed with a blue background.
+                `
+                For an explanation of logging behaviours, see [link]$print[/link].
+            `##### Example
+                [code language="javascript"]
+                    var con = $('.console').console()
+                    con.clear()
+                    con.info("Some useful info.")
+                [/code]
+            `##### Preview
+                [img width=400 styled=false hasPopup=false]resources/ConsoleInfo.png[/img]
+                
+        `
+        #### `warn()`
+            `##### Parameters
+                obj1,obj2,obj3,...
+                `
+                    A list of JavaScript objects to output.`
+            `##### Description
+                Outputs a warning message to the console. A small warning icon is displayed 
+                next to these items and the item is also displayed with a yellow background.
+                `
+                For an explanation of logging behaviours, see [link]$print[/link].
+            `##### Example
+                [code language="javascript"]
+                    var con = $('.console').console()
+                    con.clear()
+                    con.warn("Some useful warning.")
+                [/code]
+            `##### Preview
+                [img width=400 styled=false hasPopup=false]resources/ConsoleWarn.png[/img]    
+                
+        `
+        #### `error()`
+            `##### Parameters
+                obj1,obj2,obj3,...
+                `
+                    A list of JavaScript objects to output.
+            `##### Description
+                Outputs an informational message to the console. A small error icon is displayed 
+                next to these items and the item is also displayed with a red background.
+                `
+                For an explanation of logging behaviours, see [link]$print[/link].
+            `##### Example
+                [code language="javascript"]
+                    var con = $('.console').console()
+                    con.clear()
+                    con.error("Some error.")
+                [/code]
+            `##### Preview
+                [img width=400 styled=false hasPopup=false]resources/ConsoleError.png[/img]    
+        `
+        #### `output()`
+            `##### Parameters
+                obj1,obj2,obj3,...
+                `
+                    A list of JavaScript objects/strings to output.`
+            `##### Description
+                Outputs a object or message to the console. Includes the "<" sign at the beginning of the line,
+                indicating that this data has been outputted by the console itself.`
+                [img width=200 styled=false hasPopup=false]resources/ConsoleOutput.png[/img]
+                `
+                For an explanation of logging behaviours, see [link]$print[/link].
+                
+        `
+        #### `clear()`
+            `##### Parameters
+                None`
+            `##### Description
+                Clears the console.
+                `
+                If called from the JavaScript extension then an informational message "Console was cleared" will
+                be logged to the console afterwards.`
+        `
+        #### `input()`
+            `##### Parameters
+                text`
+                    The text that will be added as an input in the log.
+            `##### Description
+                Shows input text highlighted in the selected language, in the console with an arrow to the right in front of it.`
+                [img width=400 styled=false hasPopup=false]resources/ConsoleInput.png[/img]  
+        `
+        #### `time()`
+            `##### Parameters
+                label`
+                    The name to give the new timer. This will identify the timer;
+                    use the same name when calling [link]console.timeEnd()[/link] to stop the
+                    timer and output the time to the console.`
+            `##### Description
+                Starts a timer you can use to track how long an operation takes. 
+                You give each timer a unique name. When you call [link]console.timeEnd()[/link] with the same
+                name, the console will output the time, in milliseconds, that elapsed since 
+                the timer was started.`
+
+
+        `
+        #### `timeEnd()`
+            `##### Parameters
+                label
+                    The name of the timer to stop. Once stopped, the elapsed time is 
+                    automatically displayed in the console.`
+            `##### Description
+                Stops a timer that was previously started by calling [link]console.time()[/link].`
+        `
+        
+        #### `$print()`
+            `##### Parameters
+                class,obj1,obj2,obj3,...
+                `
+                    class:`
+                        The class parameter is a `js String` representing the html class name that will be added to the printed 
+                        element. The class will also be found in the 'type' property of the object stored in the
+                        elementLog`
+                    obj1,obj2,obj3,...:`
+                        A list of JavaScript objects/strings to output
+            `
+            `##### Description
+                Will display the provided objects in the console.
+                Objects and Arrays printed to the console will become expandable in the console in a similar way to how they
+                are expandable in the chrome's console.
+                Error objects will also be expandable, however these won't show their properties but a formatted stack trace instead.
+                There are also a couple of special object types that can be passed for special behavior:`
+                    * [link]PlainText[/link]:`
+                        Will be displayed as plain text without quotation marks or a special text color.`
+                    * [link]LineNumber[/link]:`
+                        Will be displayed in the right handside of the log as the origin of the message.`
+                    * [link]htmlElement[/link]:`
+                        Will be displayed as a real html element rather than an expandable object.`
+                A detailed definition of these classes will be provided below. See [link]Logging classes[/link].
+                Any function output text to the console other than 'input' forwards its data to this function.
+                The class parameter is what will define the styling of the displayed data.
+        `
+        #### `$handleInput()`
+            `##### Parameters
+                force`
+                    Boolean - If set to true, the text is handled even if the [link]onInput()[/link] method told it to be ignored.`
+            `##### Description
+                Takes the text inputted by the user and sends it to the [link]onInput()[/link] method.
+                This will also clear the [link]inputEditor[/link], call the [link]input()[/link] method, and add the inputted text to the [link]inputs[/link] array.
+        `
+        #### `$prevHistory()`
+            `##### Parameters
+                None`
+            `##### Description
+                Sets the [link]inputEditor[/link] text to the previously most recent typed input into the console.
+        `
+        #### `$nextHistory()`
+            `##### Parameters
+                None`
+            `##### Description
+                Sets the [link]inputEditor[/link] text to the next most recently typed input into the console.
+            
+        `
+        #### `$addDivider()`
+            `##### Parameters
+                element
+                    Element to add the dividers to.
+            `##### Description
+                Adds a divider at the top and bottom of a passed element if needed. Will always add a divider on the bottom. It will add a divider on the top also, unless the previous line was an input.`
+        `
+        #### `$getLastPrint()`
+            `##### Parameters
+                None.`
+            `##### Description
+                Gets the last element from the [link]elementLog[/link].
+            
+        #### `$makeStringsPlain()`
+            `##### Parameters
+                list`
+                    The list of objects/strings to turn into plain text.`
+            `#### Description
+                Goes through a list of items, and will wrap all strings in the [link]PlainText[/link] object, so that it will be logged as unformatted text.
+            
+        #### `$trigger()`
+            `##### Parameters
+                 event`
+                    A console event to be fired.`
+            `##### Description
+                Fires an event defined in [link]Console.Events[/link].`
+        #### `$removeElement()`
+            `##### Parameters
+                element`
+                    The element to remove.`
+            `##### Description
+                Removes an element from the console's [link]elementLog[/link], [link]inputs[/link] or [link]outputs[/link] property, and disposes of all the connected data properly.
+                If a parameter is not given, then the console is cleaned till the `maxHistoryLength` is reached. E.G.
+                If you change `maxHistoryLength` to 40 from 100, the console will not remove any messages till the user inputs
+                a new message, or till `$removeElement()` is called.`
+        `
+        #### `$removeHistory()`
+            `##### Parameters
+                element`
+            `##### Description
+                Remove an element from the console's [link]inputs[/link] property, this means that the corresponding text can no
+                longer be reached by using up and down arrow keys in the console. This function does [b]NOT[/b] remove the element from the [link]elementLog[/link]`
+        `
+
+## JavaScript Extension
+    [spoiler text="Show extra fieds and properties that are added by the JavaScript extension"]
+        ### Properties
+            #### `worker`
+                The actual worker object executing code.
+            #### `workerFile`
+                The file that the worker was created from, call [link]setupWorker()[/link] in order to update the actual worker.
+        ### Events
+            #### `onWorkerMessage()`
+                `##### Parameters
+                    callback, remove
+                    `
+                    callback`
+                        The function to call when an event is fired.`
+                    remove`
+                        If this is set to true then the listener is removed, instead of added.`
+                `##### Description
+                    Listen for any events fired from the worker object. 
+                    The callback will receive the same arguments as the worker.onmessage usually receives.
+                    Do not define worker.onmessage directly, as then the 
+                    `
+                    ```js
+                        con.onInput(function(text){
+                            this.log(text);
+                            return true;
+                        })
+                    ```
+                    `
+        ### Methods
+            #### `setForwardOutput()`
+                `##### Parameters
+                    forwardTypes`
+                        The types of console outputs that should be forwarded to the real console.`
+                        Can be either true or false to forward all or none of the messages, or a list of strings with the names of messages to forward, E.G. `["warn", "error"]`.
+                `##### Description
+                    Forwards the data logged to the console to the browser console as well. The line numbers will unfortunately get messed up a bit in the browser console due to an issue with eval().
+            #### `setupWorker()`
+                `##### Parameters
+                    workerFile`
+                        If provided, the workerFile will be set to this file. If left out, the already defined workerFile will be used.
+                        You can easily extend the JavaScript console with pre-defined methods using this file.
+                `##### Description
+                    Calls terminateWorker if the current worker is still running, and initialises a new worker.
+            #### `terminateWorker()`
+                `##### Parameters
+                    none
+                `##### Description
+                    Stops the currently running worker from executing its code.
+    [/spoiler]
+        
+----
+## Logging classes
+    ### [headerCode]PlainText[/headerCode] class
+        `#### Description
+            Turns a string into a plainText object, indicating that it should not receive any additional formatting/styling when outputed using [link]$print()[/link].
+        `#### Constructor
+            `##### Parameters
+                text`
+                    The text to turn into plain text.
+        #### Properties
+            #####  ` text`
+                The string inputted.
+            #####  `element`
+                The literal element that will outputted by [link]$print()[/link].
+    ### [headerCode]LineNumber[/headerCode] class
+        `#### Description
+             Creates a line number element that can be outputted by [link]$print()[/link].
+             Should be the first of the output elements passed to $print() for the best allignment.
+        `#### Constructor
+            `##### Parameters
+                file`
+                    The file name to be shown. 
+                lineNumber`
+                    The line number to be shown.
+                trace`
+                    An error trace to construct the lineNumber from.
+            `#### Description
+                Either a combination of file and lineNumber should be provided, a trace should be provided, or file should be a number indicating the offset in the function stack trace, see the provided examles.   
+        `#### Examples
+            `##### file lineNumber combination
+                ```js
+                    var cons = $(".console").console();
+                    cons.log("text", new cons.LineNumber("fileName", 18));
+                ```
+                [img width=400 styled=false hasPopup=false]resources/LoggingLineNumber.png[/img] 
+            `##### trace
+                When called from test.js:
+                ```js
+                    var cons = $(".console").console();
+                    var trace = new Error("test").stack;
+                    cons.log("text", new cons.LineNumber(null, null, trace));
+                ```
+                
+                We get a response like this:
+                [img width=400 styled=false hasPopup=false]resources/LoggingLineNumber2.png[/img] 
+            `##### automatic trace
+                When called from test.js:
+                ```js
+                    var cons = $(".console").console();
+                    function a(){
+                    	cons.log("text", new cons.LineNumber(1));
+                    }
+                    function b(){
+                    	cons.log("text", new cons.LineNumber(2));
+                    }
+                    a();
+                    b();
+                ```
+                We get a response like:
+                [img width=400 styled=false hasPopup=false]resources/LoggingLineNumber3.png[/img] 
+                The number indicates what line of the error stack trace to use. 
+                The error of the stack trace in function *a* will have looked like this:
+                ```
+                    Error
+                        at new Console.LineNumber (console.js:763)
+                        at a (test.js:3)
+                        at test.js:8
+                ```
+        #### Properties
+            ##### `file`
+                The file name where the notification was raised.
+            ##### `lineNumber`
+                The lineNumber where the notification was raised.
+            ##### `element`
+                The literal element that will be printed by [link]$print()[/link].
+    ### [headerCode]htmlElement[/headerCode] class
+        `#### Description
+             If an element object is passed into [link]$print()[/link] directly, it is displayed as an object. This class allows
+             developers to change this behavior and print a html element to the console instead. This brings an element of
+             interactivity to the console, which is previously missing.
+             
+        `#### Constructor
+            `##### Parameters
+                element
+                    The element to be logged. 
+        `#### Example
+            ```js
+                var cons = $(".console").console();
+                cons.log(new cons.htmlElement($("<div style=background-color:lime>some text</div>")[0]));
+            ```
+            [img width=400 styled=false hasPopup=false]resources/LogginghtmlElement.png[/img] 
+            ----
+            `
+            As you may have guessed you can also implement interactive elements! For example:
+            ```js
+                window.cons = $(".console").console();
+                cons.log("Are you happy?");
+                cons.log(
+                    new cons.htmlElement($(`<button>Yes</button>`).click(function(){
+                        window.cons.log("Celebrate good times!");
+                    })),
+                    new cons.htmlElement($(`<button>No</button> `).click(function(){
+                        window.cons.log("Aww... Hugs!");
+                    }))
+                );
+            ```
+            [img width=400 styled=false hasPopup=false]resources/LogginghtmlElement_InteractivityExample.png[/img]
+        #### Properties
+            ##### `element`
+                The literal element that will displayed using [link]$print()[/link].
+

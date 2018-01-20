@@ -1,0 +1,304 @@
+[head]
+    [html]
+        <link rel="icon" type="image/png" href="resources/_Icon.png">
+        <style>
+            .button {
+                width:100%;
+                height:30px;
+                font-size:16pt;
+                line-height: 30px;
+                padding-left: 5px;
+            }
+            
+            .button:hover {
+                background-color:rgb(240,240,240);
+            }
+            
+            .button:active {
+                background-color:rgb(230,230,230);
+            }
+            
+            .websiteBrowser > a {
+                color: black;
+                text-decoration: none;
+            }
+            
+            .websiteBrowser > a:active {
+                color:black;
+            }
+            .websiteBrowser > a:hover {
+                background-color:rgb(240,240,240);
+            }
+        </style>
+    [/html]
+[/head]
+[siteBrowser]
+    [center]
+        [img width=60% styled=false hasPopup=false]resources/_Icon.png[/img]
+    [/center]
+    `
+    `
+    [link url="About.html"          ][button]About          [/button][/link]
+    [link url="Embedding Guide.html"][button]Embedding Guide[/button][/link]
+    [link url="API Reference.html"  ][button]API Reference  [/button][/link]
+[/siteBrowser]
+[linkDictionary]
+    About           = About.html
+    Embedding Guide = Embedding Guide.html
+    API Reference   = API Reference.html
+[/linkDictionary]
+
+
+# Embedding Guide
+
+One of the best features about Console.js is the ability to embed a console on any website.
+We have tried to make this as simple as possible.`
+`
+To start off you need to remember to include the following files:`
+
+    * [link url='https://jquery.com/']jQuery[/link]`
+    * [link url='https://ace.c9.io/']Ace[/link]`
+    * `console.js` and `console.css``
+`
+[spoiler text="Example using publicly hosted files..."]
+    [code language=html name="Publicly hosted files"]
+        <!--<  Include jQuery and Ace  >-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.9/ace.js"></script>
+        
+        <!--<  Include console.js and console.css >-->
+        <script src="https://cdn.rawgit.com/TarVK/chromeConsole/master/console.js"></script>
+        <link rel="stylesheet" href="https://cdn.rawgit.com/TarVK/chromeConsole/master/console.css" type="text/css" />
+    [/code]
+[/spoiler]
+`
+[spoiler text="Example using locally hosted files..."]
+    [code language=html name="Locally hosted files"]
+        <!--<  Relative paths  >-->
+        <script src="/libs/jQuery/jquery.js"></script>
+        <script src="/libs/ace/ace.js"></script>
+        
+        <!--<  Include console.js and console.css >-->
+        <script src="/libs/console/console.js"></script>
+        <script src="/libs/console/console.css"></script>
+    [/code]
+[/spoiler]
+`
+`
+After adding the above files, we can change an existing html element into
+a console. You do this as follows:`
+`
+```js
+    var cons = $(".console").console({
+        onInput: function(text){
+            this.output(text);
+        },
+    });
+```
+`
+For a full list of options please see the [link]API Reference[/link].
+`
+`
+## Basic console template
+`
+If you just want to copy and paste some code to get going, here is some example code:`
+`
+[code language=html name="Template" preview=true previewHeight=80% previewWidth=80%]
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <!--<  Include jQuery and Ace  >-->
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.9/ace.js"></script>
+            
+            <!--<  Include console.js and console.css >-->
+            <script src="https://cdn.rawgit.com/TarVK/chromeConsole/master/console.js"></script>
+            <link rel="stylesheet" href="https://cdn.rawgit.com/TarVK/chromeConsole/master/console.css" type="text/css" />
+            
+            <style>
+                html, body, .console{
+                    width: 100%;
+                    height: 100%;
+                    margin: 0px;
+                }
+            </style>
+            <script>
+                $(function(){
+                    var cons = $(".console").console({
+                        onInput: function(text){
+                            this.output(text);
+                        },
+                    });
+                });
+            </script>
+        </head>
+        <body>
+            <div class="console"></div>
+        </body>
+    </html>
+[/code]
+`
+----
+# Setting up the JavaScript console
+
+To setup the JavaScript console you will need `jsConsole.sf.js` and setup the worker correctly. 
+Consider the following examples:`
+
+[spoiler text="Example using public hosted files..."]
+    [code language=html name="Absolute paths"]
+        <!--<  Include JavaScript extension >-->
+        <script src="https://cdn.rawgit.com/TarVK/chromeConsole/master/threaded/console.sf.js"></script>
+        <script> //Setup the JavaScript console worker correctly.
+            var workerURL = "https://cdn.rawgit.com/TarVK/chromeConsole/master/threaded/jsConsole.sf.js";
+            $(function(){
+                var cons = $(".console").jsConsole({worker:getWorker()});
+                
+                cons.info("Type javascript here!");
+            });
+            
+            //Due to a limitation where you cannot instantiate a worker from a foreign url, 
+            // you have to get the text first using a HTTP request, 
+            // and then submit the data as a blob to the worker constructor.
+            function getWorker(){
+                var req = new XMLHttpRequest();
+                req.open("GET", workerURL, false);
+                req.send();
+                var blob;
+                try{
+                    blob = new Blob([req.responseText], {type: 'application/javascript'});
+                }catch(e){ // Backwards-compatibility
+                    window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
+                    blob = new BlobBuilder();
+                    blob.append(req.responseText);
+                    blob = blob.getBlob();
+                }
+                return URL.createObjectURL(blob);
+            }
+        </script>
+    [/code]
+[/spoiler]
+`
+[spoiler text="Example using locally hosted files..."]
+    [code language=html name="Relative paths"]
+        <!--<  Include JavaScript extension  >-->
+        <script src="/libs/console/threaded/jsConsole.sf.js"></script>
+        <script>
+            var cons = $(".console").workerJsConsole({worker:"/libs/threaded/jsConsole.sf.js"});
+        </script>
+    [/code]
+[/spoiler]
+`
+`
+
+## Full JavaScript console example
+`
+If you just want to copy and paste some code to get going, here is some example code`
+`
+[code language=html name="JavaScript Console" preview=true previewHeight=80% previewWidth=80%]
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.9/ace.js"></script>
+            <script src="https://cdn.rawgit.com/TarVK/chromeConsole/master/console.js"></script>
+            <script src="https://cdn.rawgit.com/TarVK/chromeConsole/master/extensions/jsConsole/jsConsole.sf.js"></script>
+            <link rel="stylesheet" href="https://cdn.rawgit.com/TarVK/chromeConsole/master/console.css" type="text/css" />
+            
+            <style>
+                html, body, .console{
+                    width: 100%;
+                    height: 100%;
+                    margin: 0px;
+                }
+            </style>
+            <script>
+                var workerURL = "https://cdn.rawgit.com/TarVK/chromeConsole/master/extensions/jsConsole/jsConsole.sf.js";
+                $(function(){
+                    //var cons = $(".console").jsConsole({worker:"some/relative/location/jsConsole.sf.js"});
+                    var cons = $(".console").jsConsole({worker:getWorker()});
+                    
+                    cons.info("Type javascript here!");
+                });
+                
+                //Due to a limitation where you cannot instantiate a worker from a foreign url.
+                function getWorker(){
+                    var req = new XMLHttpRequest();
+                    req.open("GET", workerURL, false);
+                    req.send();
+                    var blob;
+                    try{
+                        blob = new Blob([req.responseText], {type: 'application/javascript'});
+                    }catch(e){ // Backwards-compatibility
+                        window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
+                        blob = new BlobBuilder();
+                        blob.append(req.responseText);
+                        blob = blob.getBlob();
+                    }
+                    return URL.createObjectURL(blob);
+                }
+            </script>
+        </head>
+        <div class=console></div>
+    </html>
+[/code]
+`
+----
+# JavaScript External Console Window
+If you don't have access to the console, because, for example, the built in console in the browser is blocked,
+this plugin can be used to create a JavaScript console to interact with your code for debugging needs.`
+`
+Unfortunately windows can only be opened on user interaction, 
+so the console will only open after you click somewhere in the page that you are trying to add the console to.`
+`
+You can either embed the code on your page, or inject the console into a random page.`
+`
+## Embedding the external console window onto your own page
+[code language=html name="Embedding console window" preview=true previewHeight=80% previewWidth=80%]
+    <!--<  This will be your page with your contents  >-->
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <!--<  Add the console to the page  >-->
+            <script>
+                window.script = document.createElement("script"); 
+                script.setAttribute("src", "https://cdn.rawgit.com/TarVK/chromeConsole/master/extensions/jsConsolePlugin/jsConsolePlugin.js"); 
+                document.head.appendChild(script);
+            </script>
+            
+            <style>
+                .someRandomPageContents{
+                    background-color: rgb(200,200,200);
+                }
+            </style>
+            <script>
+                //some script that would be logging information which you for some reason have no access to without embedding the console.
+                var b = "some variable accessable through the embedded console";
+                setInterval(function(){
+                    console.log("some message");
+                }, 2000);
+            </script>
+        </head>
+        <div class="someRandomPageContents">
+            Click anywhere on the page to open the javascript console
+        </div>
+    </html>
+[/code]
+`
+## Injecting the external console window into an arbitrary page
+Unfortunately many web pages like google and youtube don't allow scripts of random domains to be ran, so the injection won't work for these pages.`
+[link url="http://example.com/"]example.com[/link] is an example of a page that this will work on correctly.`
+`
+There are 3 steps to injecting the console onto an page:
+1. Goto your webpage and type 'javascript:' in the addressbar`
+`
+2. Copy the lines of code provided below and paste them in the addressbar`
+`
+3. Hit enter and click somewhere in the webpage`
+`
+Your console should now appear.`
+`
+[code language=javascript name="Injecting console window"]
+    window.script = document.createElement("script"); 
+    script.setAttribute("src", "https://cdn.rawgit.com/TarVK/chromeConsole/master/extensions/jsConsolePlugin/jsConsolePlugin.js"); 
+    document.head.appendChild(script);
+[/code]

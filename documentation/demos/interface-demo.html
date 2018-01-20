@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.9/ace.js"></script>
+        <script src="https://cdn.rawgit.com/TarVK/chromeConsole/master/console.js"></script>
+        <link rel="stylesheet" href="https://cdn.rawgit.com/TarVK/chromeConsole/master/console.css" type="text/css" />
+        
+        <style>
+            html, body{
+                width: 100%;
+                height: 100%;
+                margin: 0px;
+            }
+            body>div{
+                width: 100%;
+                max-width: 800px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .console{
+                height: calc(100% - 25px);
+                border: 1px solid #CCC;
+                width: calc(100% - 2px);
+            }
+        </style>
+        <script>
+            window.randomText = "No Text Loaded Yet, With Fancy Capitals";
+            function updateURLText(url){
+                var req = new XMLHttpRequest();
+                req.open("GET", "https://cors-anywhere.herokuapp.com/"+url, true);
+                req.send();
+                req.onreadystatechange = function(){
+                    window.randomText = req.response;
+                };
+            }
+            
+            function copyToClipBoard(text){
+                var inp = document.createElement('textarea');
+                document.body.appendChild(inp)
+                inp.value = text;
+                inp.select();
+                document.execCommand('copy', false);
+                inp.remove();
+            }
+            
+            $(function(){
+                updateURLText(document.getElementById("WebsiteURL").value);
+                
+                var cons = $(".console").console({
+                    mode: "r",
+                    onInput: function(text){
+                        try{
+                            var m = text.match(/^\/(.*)\/(.*)$/);
+                            var regex;
+                            if(m) regex = new RegExp(m[1], m[2]);
+                            else regex = new RegExp(text, "g");
+                            
+                            var match;
+                            var out = [];
+                            for(var i=0; i<100 && (i<1 || regex.global) 
+                                    && (match = regex.exec(window.randomText)); i++)
+                                out.push(match);
+                                
+                            this.output(out);
+                        }catch(e){
+                            this.error(e);
+                        }
+                    },
+                    onRightClick: function(obj){
+                        var out = JSON.stringify(obj.data);
+                        copyToClipBoard(out);
+                        this.info(
+                            "The following has be copied to your clipboard:\n" + 
+                            (out.length > 105 ? out.substr(0,105) + "...": out)
+                        );
+                    }
+                });
+                
+                cons.info(
+                    "Type in a regular expression to search for it in the above website.\n"+
+                    "E.G. '\"((?:.|\\s)+?)\"'\n"+
+                    "You can also right click on returned values to copy them to the clipboard!"
+                );
+                cons.inputEditor.insert("\"((?:.|\\s)+?)\"");
+            });
+        </script>
+    </head>
+    <body>
+        <div>
+            <span>Select site: </span>
+            <input type=field id="WebsiteURL" onBlur=updateURLText(this.value) size=50 
+                value="https://content.nunction.net/humor/alice-and-bob.txt" />
+        </div>
+        <div class="console"></div>
+    </body>
+</html>
