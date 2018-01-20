@@ -19,15 +19,15 @@
                 background-color:rgb(230,230,230);
             }
             
-            .websiteBrowser > a {
+            .websiteBrowser > a{
                 color: black;
                 text-decoration: none;
             }
             
-            .websiteBrowser > a:active {
+            .websiteBrowser > a:active{
                 color:black;
             }
-            .websiteBrowser > a:hover {
+            .websiteBrowser > a:hover{
                 background-color:rgb(240,240,240);
             }
             
@@ -47,11 +47,11 @@
     [/center]
     `
     `
-    [link url="About.html"          ][button]About           [/button][/link]
-    [link url="Embedding Guide.html"][button]Embedding Guide [/button][/link]
-    [link url="API Reference.html"  ][button]API Reference   [/button][/link]
+    [link url="About.html"          ][button]About          [/button][/link]
+    [link url="Embedding Guide.html"][button]Embedding Guide[/button][/link]
+    [link url="API Reference.html"  ][button]API Reference  [/button][/link]
+    [link url="https://github.com/TarVK/chromeConsole/tree/version-1.0"][button]Source Code[/button][/link]
 [/siteBrowser]
-
 
     
 
@@ -66,7 +66,7 @@
     $Print()           = #API_Functions_and_Classes>Console_class>Methods>$print()
     PlainText          = #API_Functions_and_Classes>Logging_classes>PlainText_class
     LineNumber         = #API_Functions_and_Classes>Logging_classes>LineNumber_class
-    htmlElement        = #API_Functions_and_Classes>Logging_classes>htmlElement_class
+    HtmlElement        = #API_Functions_and_Classes>Logging_classes>HtmlElement_class
     Console            = #API_Functions_and_Classes>Console_class
     Console.Events     = #API_Functions_and_Classes>Console_class>Events
     
@@ -151,9 +151,9 @@
     file                     = #API_Functions_and_Classes>Logging_classes>LineNumber_class>Properties>file
     lineNumber               = #API_Functions_and_Classes>Logging_classes>LineNumber_class>Properties>lineNumber
     element                  = #API_Functions_and_Classes>Logging_classes>LineNumber_class>Properties>element
-    htmlElement class        = #API_Functions_and_Classes>Logging_classes>htmlElement_class
-    Properties               = #API_Functions_and_Classes>Logging_classes>htmlElement_class>Properties
-    element                  = #API_Functions_and_Classes>Logging_classes>htmlElement_class>Properties>element
+    HtmlElement class        = #API_Functions_and_Classes>Logging_classes>HtmlElement_class
+    Properties               = #API_Functions_and_Classes>Logging_classes>HtmlElement_class>Properties
+    element                  = #API_Functions_and_Classes>Logging_classes>HtmlElement_class>Properties>element
 [/linkDictionary]
 
 
@@ -367,7 +367,7 @@
                 [[ ATTENTION REQUIRED: Tar, why do we return true? What happens when you return false? xD Anything different?, -yes.
                 Listen to the event fired when a user inputs some data into the console. 
                 The callback should return a boolean, indicating if the input was handled.
-                If false is returned, the user's input text won't be cleared, and won't be added to the [link]history[/link] nor [link]elementLog[/link]. 
+                If false is returned, the user's input text won't be cleared, and won't be added to the [link]inputs[/link] nor [link]elementLog[/link]. 
                 The callback will be called with the data the user inputted. For example:`
                 `
                 ```js
@@ -462,7 +462,7 @@
                 Will display the following:`
                 [img width=100 styled=false hasPopup=false]resources/ConsoleLogCount.png[/img]
                 `
-                For an explanation of logging behaviours, see [link]$print[/link].
+                For an explanation of logging behaviours, see [link]$print()[/link].
         `
         #### `info()`
             `##### Parameters
@@ -473,7 +473,7 @@
                 Outputs an informational message to the console. A small "i" icon is displayed 
                 next to these items and the item is also displayed with a blue background.
                 `
-                For an explanation of logging behaviours, see [link]$print[/link].
+                For an explanation of logging behaviours, see [link]$print()[/link].
             `##### Example
                 [code language="javascript"]
                     var con = $('.console').console()
@@ -493,7 +493,7 @@
                 Outputs a warning message to the console. A small warning icon is displayed 
                 next to these items and the item is also displayed with a yellow background.
                 `
-                For an explanation of logging behaviours, see [link]$print[/link].
+                For an explanation of logging behaviours, see [link]$print()[/link].
             `##### Example
                 [code language="javascript"]
                     var con = $('.console').console()
@@ -513,7 +513,7 @@
                 Outputs an informational message to the console. A small error icon is displayed 
                 next to these items and the item is also displayed with a red background.
                 `
-                For an explanation of logging behaviours, see [link]$print[/link].
+                For an explanation of logging behaviours, see [link]$print()[/link].
             `##### Example
                 [code language="javascript"]
                     var con = $('.console').console()
@@ -533,7 +533,7 @@
                 indicating that this data has been outputted by the console itself.`
                 [img width=200 styled=false hasPopup=false]resources/ConsoleOutput.png[/img]
                 `
-                For an explanation of logging behaviours, see [link]$print[/link].
+                For an explanation of logging behaviours, see [link]$print()[/link].
                 
         `
         #### `clear()`
@@ -597,7 +597,7 @@
                         Will be displayed as plain text without quotation marks or a special text color.`
                     * [link]LineNumber[/link]:`
                         Will be displayed in the right handside of the log as the origin of the message.`
-                    * [link]htmlElement[/link]:`
+                    * [link]HtmlElement[/link]:`
                         Will be displayed as a real html element rather than an expandable object.`
                 A detailed definition of these classes will be provided below. See [link]Logging classes[/link].
                 Any function output text to the console other than 'input' forwards its data to this function.
@@ -687,7 +687,7 @@
                 `##### Description
                     Listen for any events fired from the worker object. 
                     The callback will receive the same arguments as the worker.onmessage usually receives.
-                    Do not define worker.onmessage directly, as then the 
+                    Do not define worker.onmessage directly.
                     `
                     ```js
                         con.onInput(function(text){
@@ -793,7 +793,7 @@
                 The lineNumber where the notification was raised.
             ##### `element`
                 The literal element that will be printed by [link]$print()[/link].
-    ### [headerCode]htmlElement[/headerCode] class
+    ### [headerCode]HtmlElement[/headerCode] class
         `#### Description
              If an element object is passed into [link]$print()[/link] directly, it is displayed as an object. This class allows
              developers to change this behavior and print a html element to the console instead. This brings an element of
@@ -806,9 +806,9 @@
         `#### Example
             ```js
                 var cons = $(".console").console();
-                cons.log(new cons.htmlElement($("<div style=background-color:lime>some text</div>")[0]));
+                cons.log(new cons.HtmlElement($("<div style=background-color:lime>some text</div>")[0]));
             ```
-            [img width=400 styled=false hasPopup=false]resources/LogginghtmlElement.png[/img] 
+            [img width=400 styled=false hasPopup=false]resources/LoggingHtmlElement.png[/img] 
             ----
             `
             As you may have guessed you can also implement interactive elements! For example:
@@ -816,15 +816,15 @@
                 window.cons = $(".console").console();
                 cons.log("Are you happy?");
                 cons.log(
-                    new cons.htmlElement($(`<button>Yes</button>`).click(function(){
+                    new cons.HtmlElement($(`<button>Yes</button>`).click(function(){
                         window.cons.log("Celebrate good times!");
                     })),
-                    new cons.htmlElement($(`<button>No</button> `).click(function(){
+                    new cons.HtmlElement($(`<button>No</button> `).click(function(){
                         window.cons.log("Aww... Hugs!");
                     }))
                 );
             ```
-            [img width=400 styled=false hasPopup=false]resources/LogginghtmlElement_InteractivityExample.png[/img]
+            [img width=600 styled=false hasPopup=false]resources/LoggingHtmlElement_InteractivityExample.png[/img]
         #### Properties
             ##### `element`
                 The literal element that will displayed using [link]$print()[/link].
