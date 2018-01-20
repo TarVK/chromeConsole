@@ -30,6 +30,14 @@
             .websiteBrowser > a:hover{
                 background-color:rgb(240,240,240);
             }
+            
+            .headerCode {
+                font-family: 'Monaco', 'Menlo', 'Consolas', 'source-code-pro', 'Ubuntu Mono', 'Droid Sans Mono', monospace;
+                display:inline-block;
+                background-color:#ffffff;
+                border-radius:2px;
+                padding: 0 2px;
+            }
         </style>
     [/html]
 [/head]
@@ -58,7 +66,7 @@
     $Print()           = #API_Functions_and_Classes>Console_class>Methods>$print()
     PlainText          = #API_Functions_and_Classes>Logging_classes>PlainText_class
     LineNumber         = #API_Functions_and_Classes>Logging_classes>LineNumber_class
-    htmlElement        = #API_Functions_and_Classes>Logging_classes>htmlElement_class
+    HtmlElement        = #API_Functions_and_Classes>Logging_classes>HtmlElement_class
     Console            = #API_Functions_and_Classes>Console_class
     Console.Events     = #API_Functions_and_Classes>Console_class>Events
     
@@ -143,9 +151,9 @@
     file                     = #API_Functions_and_Classes>Logging_classes>LineNumber_class>Properties>file
     lineNumber               = #API_Functions_and_Classes>Logging_classes>LineNumber_class>Properties>lineNumber
     element                  = #API_Functions_and_Classes>Logging_classes>LineNumber_class>Properties>element
-    htmlElement class        = #API_Functions_and_Classes>Logging_classes>htmlElement_class
-    Properties               = #API_Functions_and_Classes>Logging_classes>htmlElement_class>Properties
-    element                  = #API_Functions_and_Classes>Logging_classes>htmlElement_class>Properties>element
+    HtmlElement class        = #API_Functions_and_Classes>Logging_classes>HtmlElement_class
+    Properties               = #API_Functions_and_Classes>Logging_classes>HtmlElement_class>Properties
+    element                  = #API_Functions_and_Classes>Logging_classes>HtmlElement_class>Properties>element
 [/linkDictionary]
 
 
@@ -589,7 +597,7 @@
                         Will be displayed as plain text without quotation marks or a special text color.`
                     * [link]LineNumber[/link]:`
                         Will be displayed in the right handside of the log as the origin of the message.`
-                    * [link]htmlElement[/link]:`
+                    * [link]HtmlElement[/link]:`
                         Will be displayed as a real html element rather than an expandable object.`
                 A detailed definition of these classes will be provided below. See [link]Logging classes[/link].
                 Any function output text to the console other than 'input' forwards its data to this function.
@@ -785,7 +793,7 @@
                 The lineNumber where the notification was raised.
             ##### `element`
                 The literal element that will be printed by [link]$print()[/link].
-    ### [headerCode]htmlElement[/headerCode] class
+    ### [headerCode]HtmlElement[/headerCode] class
         `#### Description
              If an element object is passed into [link]$print()[/link] directly, it is displayed as an object. This class allows
              developers to change this behavior and print a html element to the console instead. This brings an element of
@@ -798,7 +806,7 @@
         `#### Example
             ```js
                 var cons = $(".console").console();
-                cons.log(new cons.htmlElement($("<div style=background-color:lime>some text</div>")[0]));
+                cons.log(new cons.HtmlElement($("<div style=background-color:lime>some text</div>")[0]));
             ```
             [img width=400 styled=false hasPopup=false]resources/LoggingHtmlElement.png[/img] 
             ----
@@ -808,10 +816,10 @@
                 window.cons = $(".console").console();
                 cons.log("Are you happy?");
                 cons.log(
-                    new cons.htmlElement($(`<button>Yes</button>`).click(function(){
+                    new cons.HtmlElement($(`<button>Yes</button>`).click(function(){
                         window.cons.log("Celebrate good times!");
                     })),
-                    new cons.htmlElement($(`<button>No</button> `).click(function(){
+                    new cons.HtmlElement($(`<button>No</button> `).click(function(){
                         window.cons.log("Aww... Hugs!");
                     }))
                 );
