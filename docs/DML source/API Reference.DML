@@ -19,24 +19,16 @@
                 background-color:rgb(230,230,230);
             }
             
-            .websiteBrowser > a {
+            .websiteBrowser > a{
                 color: black;
                 text-decoration: none;
             }
             
-            .websiteBrowser > a:active {
+            .websiteBrowser > a:active{
                 color:black;
             }
-            .websiteBrowser > a:hover {
+            .websiteBrowser > a:hover{
                 background-color:rgb(240,240,240);
-            }
-            
-            .headerCode {
-                font-family: 'Monaco', 'Menlo', 'Consolas', 'source-code-pro', 'Ubuntu Mono', 'Droid Sans Mono', monospace;
-                display:inline-block;
-                background-color:#ffffff;
-                border-radius:2px;
-                padding: 0 2px;
             }
         </style>
     [/html]
@@ -47,11 +39,11 @@
     [/center]
     `
     `
-    [link url="About.html"          ][button]About           [/button][/link]
-    [link url="Embedding Guide.html"][button]Embedding Guide [/button][/link]
-    [link url="API Reference.html"  ][button]API Reference   [/button][/link]
+    [link url="About.html"          ][button]About          [/button][/link]
+    [link url="Embedding Guide.html"][button]Embedding Guide[/button][/link]
+    [link url="API Reference.html"  ][button]API Reference  [/button][/link]
+    [link url="https://github.com/TarVK/chromeConsole/tree/version-1.0"][button]Source Code[/button][/link]
 [/siteBrowser]
-
 
     
 
@@ -367,7 +359,7 @@
                 [[ ATTENTION REQUIRED: Tar, why do we return true? What happens when you return false? xD Anything different?, -yes.
                 Listen to the event fired when a user inputs some data into the console. 
                 The callback should return a boolean, indicating if the input was handled.
-                If false is returned, the user's input text won't be cleared, and won't be added to the [link]history[/link] nor [link]elementLog[/link]. 
+                If false is returned, the user's input text won't be cleared, and won't be added to the [link]inputs[/link] nor [link]elementLog[/link]. 
                 The callback will be called with the data the user inputted. For example:`
                 `
                 ```js
@@ -462,7 +454,7 @@
                 Will display the following:`
                 [img width=100 styled=false hasPopup=false]resources/ConsoleLogCount.png[/img]
                 `
-                For an explanation of logging behaviours, see [link]$print[/link].
+                For an explanation of logging behaviours, see [link]$print()[/link].
         `
         #### `info()`
             `##### Parameters
@@ -473,7 +465,7 @@
                 Outputs an informational message to the console. A small "i" icon is displayed 
                 next to these items and the item is also displayed with a blue background.
                 `
-                For an explanation of logging behaviours, see [link]$print[/link].
+                For an explanation of logging behaviours, see [link]$print()[/link].
             `##### Example
                 [code language="javascript"]
                     var con = $('.console').console()
@@ -493,7 +485,7 @@
                 Outputs a warning message to the console. A small warning icon is displayed 
                 next to these items and the item is also displayed with a yellow background.
                 `
-                For an explanation of logging behaviours, see [link]$print[/link].
+                For an explanation of logging behaviours, see [link]$print()[/link].
             `##### Example
                 [code language="javascript"]
                     var con = $('.console').console()
@@ -513,7 +505,7 @@
                 Outputs an informational message to the console. A small error icon is displayed 
                 next to these items and the item is also displayed with a red background.
                 `
-                For an explanation of logging behaviours, see [link]$print[/link].
+                For an explanation of logging behaviours, see [link]$print()[/link].
             `##### Example
                 [code language="javascript"]
                     var con = $('.console').console()
@@ -533,7 +525,7 @@
                 indicating that this data has been outputted by the console itself.`
                 [img width=200 styled=false hasPopup=false]resources/ConsoleOutput.png[/img]
                 `
-                For an explanation of logging behaviours, see [link]$print[/link].
+                For an explanation of logging behaviours, see [link]$print()[/link].
                 
         `
         #### `clear()`
@@ -687,7 +679,7 @@
                 `##### Description
                     Listen for any events fired from the worker object. 
                     The callback will receive the same arguments as the worker.onmessage usually receives.
-                    Do not define worker.onmessage directly, as then the 
+                    Do not define worker.onmessage directly.
                     `
                     ```js
                         con.onInput(function(text){
@@ -808,7 +800,7 @@
                 var cons = $(".console").console();
                 cons.log(new cons.htmlElement($("<div style=background-color:lime>some text</div>")[0]));
             ```
-            [img width=400 styled=false hasPopup=false]resources/LogginghtmlElement.png[/img] 
+            [img width=400 styled=false hasPopup=false]resources/LoggingHtmlElement.png[/img] 
             ----
             `
             As you may have guessed you can also implement interactive elements! For example:
@@ -824,7 +816,7 @@
                     }))
                 );
             ```
-            [img width=400 styled=false hasPopup=false]resources/LogginghtmlElement_InteractivityExample.png[/img]
+            [img width=600 styled=false hasPopup=false]resources/LoggingHtmlElement_InteractivityExample.png[/img]
         #### Properties
             ##### `element`
                 The literal element that will displayed using [link]$print()[/link].

@@ -18,15 +18,15 @@
                 background-color:rgb(230,230,230);
             }
             
-            .websiteBrowser > a {
+            .websiteBrowser > a{
                 color: black;
                 text-decoration: none;
             }
             
-            .websiteBrowser > a:active {
+            .websiteBrowser > a:active{
                 color:black;
             }
-            .websiteBrowser > a:hover {
+            .websiteBrowser > a:hover{
                 background-color:rgb(240,240,240);
             }
         </style>
@@ -41,6 +41,7 @@
     [link url="About.html"          ][button]About          [/button][/link]
     [link url="Embedding Guide.html"][button]Embedding Guide[/button][/link]
     [link url="API Reference.html"  ][button]API Reference  [/button][/link]
+    [link url="https://github.com/TarVK/chromeConsole/tree/version-1.0"][button]Source Code[/button][/link]
 [/siteBrowser]
 
 # Chrome Console
