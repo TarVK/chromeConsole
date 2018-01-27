@@ -3,9 +3,9 @@
     <head>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.9/ace.js"></script>
-        <script src="https://rawgit.com/TarVK/chromeConsole/master/console.js"></script>
-        <script src="https://rawgit.com/TarVK/chromeConsole/master/extensions/jsConsole/jsConsole.sf.js"></script>
-        <link rel="stylesheet" href="https://rawgit.com/TarVK/chromeConsole/master/console.css" type="text/css" />
+        <script src="https://rawgit.com/TarVK/chromeConsole/version-1.0/console.js"></script>
+        <script src="https://rawgit.com/TarVK/chromeConsole/version-1.0/extensions/jsConsole/jsConsole.sf.js"></script>
+        <link rel="stylesheet" href="https://rawgit.com/TarVK/chromeConsole/version-1.0/console.css" type="text/css" />
         
         <style>
             html, body{
@@ -23,7 +23,7 @@
             }
         </style>
         <script>
-            var workerURL = "https://cdn.rawgit.com/TarVK/chromeConsole/master/extensions/jsConsole/jsConsole.sf.js";
+            var workerURL = "https://cdn.rawgit.com/TarVK/chromeConsole/version-1.0/extensions/jsConsole/jsConsole.sf.js";
             $(function(){
                 //var cons = $(".console").workerJsConsole({worker:"some/relative/location/jsConsole.sf.js"});
                 var cons = $(".console").jsConsole({worker:getWorker()});

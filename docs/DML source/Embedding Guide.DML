@@ -18,15 +18,15 @@
                 background-color:rgb(230,230,230);
             }
             
-            .websiteBrowser > a {
+            .websiteBrowser > a{
                 color: black;
                 text-decoration: none;
             }
             
-            .websiteBrowser > a:active {
+            .websiteBrowser > a:active{
                 color:black;
             }
-            .websiteBrowser > a:hover {
+            .websiteBrowser > a:hover{
                 background-color:rgb(240,240,240);
             }
         </style>
@@ -41,7 +41,9 @@
     [link url="About.html"          ][button]About          [/button][/link]
     [link url="Embedding Guide.html"][button]Embedding Guide[/button][/link]
     [link url="API Reference.html"  ][button]API Reference  [/button][/link]
+    [link url="https://github.com/TarVK/chromeConsole/tree/version-1.0"][button]Source Code[/button][/link]
 [/siteBrowser]
+
 [linkDictionary]
     About           = About.html
     Embedding Guide = Embedding Guide.html
@@ -67,8 +69,8 @@ To start off you need to remember to include the following files:`
         <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.9/ace.js"></script>
         
         <!--<  Include console.js and console.css >-->
-        <script src="https://cdn.rawgit.com/TarVK/chromeConsole/master/console.js"></script>
-        <link rel="stylesheet" href="https://cdn.rawgit.com/TarVK/chromeConsole/master/console.css" type="text/css" />
+        <script src="https://cdn.rawgit.com/TarVK/chromeConsole/version-1.0/console.js"></script>
+        <link rel="stylesheet" href="https://cdn.rawgit.com/TarVK/chromeConsole/version-1.0/console.css" type="text/css" />
     [/code]
 [/spoiler]
 `
@@ -112,8 +114,8 @@ If you just want to copy and paste some code to get going, here is some example 
             <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.9/ace.js"></script>
             
             <!--<  Include console.js and console.css >-->
-            <script src="https://cdn.rawgit.com/TarVK/chromeConsole/master/console.js"></script>
-            <link rel="stylesheet" href="https://cdn.rawgit.com/TarVK/chromeConsole/master/console.css" type="text/css" />
+            <script src="https://cdn.rawgit.com/TarVK/chromeConsole/version-1.0/console.js"></script>
+            <link rel="stylesheet" href="https://cdn.rawgit.com/TarVK/chromeConsole/version-1.0/console.css" type="text/css" />
             
             <style>
                 html, body, .console{
@@ -147,9 +149,9 @@ Consider the following examples:`
 [spoiler text="Example using public hosted files..."]
     [code language=html name="Absolute paths"]
         <!--<  Include JavaScript extension >-->
-        <script src="https://cdn.rawgit.com/TarVK/chromeConsole/master/threaded/console.sf.js"></script>
+        <script src="https://cdn.rawgit.com/TarVK/chromeConsole/version-1.0/extensions/jsConsole/jsConsole.sf.js"></script>
         <script> //Setup the JavaScript console worker correctly.
-            var workerURL = "https://cdn.rawgit.com/TarVK/chromeConsole/master/threaded/jsConsole.sf.js";
+            var workerURL = "https://cdn.rawgit.com/TarVK/chromeConsole/version-1.0/extensions/jsConsole/jsConsole.sf.js";
             $(function(){
                 var cons = $(".console").jsConsole({worker:getWorker()});
                 
@@ -181,9 +183,9 @@ Consider the following examples:`
 [spoiler text="Example using locally hosted files..."]
     [code language=html name="Relative paths"]
         <!--<  Include JavaScript extension  >-->
-        <script src="/libs/console/threaded/jsConsole.sf.js"></script>
+        <script src="/libs/console/extensions/jsConsole/jsConsole.sf.js"></script>
         <script>
-            var cons = $(".console").workerJsConsole({worker:"/libs/threaded/jsConsole.sf.js"});
+            var cons = $(".console").workerJsConsole({worker:"/libs/console/extensions/jsConsole/jsConsole.sf.js"});
         </script>
     [/code]
 [/spoiler]
@@ -200,9 +202,9 @@ If you just want to copy and paste some code to get going, here is some example 
         <head>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.9/ace.js"></script>
-            <script src="https://cdn.rawgit.com/TarVK/chromeConsole/master/console.js"></script>
-            <script src="https://cdn.rawgit.com/TarVK/chromeConsole/master/extensions/jsConsole/jsConsole.sf.js"></script>
-            <link rel="stylesheet" href="https://cdn.rawgit.com/TarVK/chromeConsole/master/console.css" type="text/css" />
+            <script src="https://cdn.rawgit.com/TarVK/chromeConsole/version-1.0/console.js"></script>
+            <script src="https://cdn.rawgit.com/TarVK/chromeConsole/version-1.0/extensions/jsConsole/jsConsole.sf.js"></script>
+            <link rel="stylesheet" href="https://cdn.rawgit.com/TarVK/chromeConsole/version-1.0/console.css" type="text/css" />
             
             <style>
                 html, body, .console{
@@ -212,7 +214,7 @@ If you just want to copy and paste some code to get going, here is some example 
                 }
             </style>
             <script>
-                var workerURL = "https://cdn.rawgit.com/TarVK/chromeConsole/master/extensions/jsConsole/jsConsole.sf.js";
+                var workerURL = "https://cdn.rawgit.com/TarVK/chromeConsole/version-1.0/extensions/jsConsole/jsConsole.sf.js";
                 $(function(){
                     //var cons = $(".console").jsConsole({worker:"some/relative/location/jsConsole.sf.js"});
                     var cons = $(".console").jsConsole({worker:getWorker()});
@@ -261,7 +263,7 @@ You can either embed the code on your page, or inject the console into a random 
             <!--<  Add the console to the page  >-->
             <script>
                 window.script = document.createElement("script"); 
-                script.setAttribute("src", "https://cdn.rawgit.com/TarVK/chromeConsole/master/extensions/jsConsolePlugin/jsConsolePlugin.js"); 
+                script.setAttribute("src", "https://cdn.rawgit.com/TarVK/chromeConsole/version-1.0/extensions/jsConsolePlugin/jsConsolePlugin.js"); 
                 document.head.appendChild(script);
             </script>
             
@@ -299,6 +301,6 @@ Your console should now appear.`
 `
 [code language=javascript name="Injecting console window"]
     window.script = document.createElement("script"); 
-    script.setAttribute("src", "https://cdn.rawgit.com/TarVK/chromeConsole/master/extensions/jsConsolePlugin/jsConsolePlugin.js"); 
+    script.setAttribute("src", "https://cdn.rawgit.com/TarVK/chromeConsole/version-1.0/extensions/jsConsolePlugin/jsConsolePlugin.js"); 
     document.head.appendChild(script);
 [/code]
