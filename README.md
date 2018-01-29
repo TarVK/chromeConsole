@@ -1,5 +1,5 @@
 # Chrome Console
-Console.js is an open-source embeddable console, written in JavaScript. It attempts to match most of the features provided by Chrome's JavaScript console and is easy to embed into any web page or browser application like NW.js and Electron.
+ChromeConsole is an open-source embeddable console, written in JavaScript. It attempts to match most of the features provided by Chrome's JavaScript console and is easy to embed into any web page or browser application like NW.js and Electron.
 
 ![JavaScript Console](./docs/readme/JavaScriptConsole.png)
 
