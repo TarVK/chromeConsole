@@ -11,7 +11,7 @@ Or used to build handy utilities, like this utility which searches a URL for a g
 
 ![RegEx Text Parser](./docs/readme/RegexConsole.png)
 
-Please visit the [project's website](https://tarvk.github.io/chromeConsole/About.html) to learn how to embed the console into your website, and build it to your own needs.
+Please visit the [project's website](https://tarvk.github.io/chromeConsole/About.html) to learn more.
 
 ## Todo:
 * Wrap object overflow properly.
