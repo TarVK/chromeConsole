@@ -1,5 +1,6 @@
 # Chrome Console
 ChromeConsole is an open-source embeddable console, written in JavaScript. It attempts to match most of the features provided by Chrome's JavaScript console and is easy to embed into any web page or browser application like NW.js and Electron.
+For a working demo and details please visit the [project's website](https://tarvk.github.io/chromeConsole/About.html)
 
 ![JavaScript Console](./docs/readme/JavaScriptConsole.png)
 
@@ -10,8 +11,6 @@ The console itself doesn't provide language evaluation, but merely provides the 
 Or used to build handy utilities, like this utility which searches a URL for a given regex:
 
 ![RegEx Text Parser](./docs/readme/RegexConsole.png)
-
-Please visit the [project's website](https://tarvk.github.io/chromeConsole/About.html) to learn more.
 
 ## Todo:
 * Wrap object overflow properly.
