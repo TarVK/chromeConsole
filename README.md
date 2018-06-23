@@ -14,6 +14,11 @@ Or used to build handy utilities, like this utility which searches a URL for a g
 
 ![RegEx Text Parser](./docs/readme/RegexConsole.png)
 
+## Projects using Chrome Console
+
+* [Empirler](https://github.com/TarVK/Empirler)
+* [Ruby Console](https://github.com/sancarn/RubyConsole)
+
 ## Todo:
 * Wrap object overflow properly.
 * Make a fix for Edge (\<details\> not implemented).
