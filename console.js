@@ -262,7 +262,7 @@
         return "<span class='rawOutput'>"+this.prefix+this.data+"</span>";
     };
     DataObject.prototype.createObjectData = function(){
-        var keys = Object.getOwnPropertyNames(this.data)
+        var keys = Object.getOwnPropertyNames(this.data);
         //Symbols are still not universally supported. But if they do exist, include in output
         if (window.Symbol) keys = keys.concat(Object.getOwnPropertySymbols(this.data)); 
         if(this.data && this.data.__proto__!=Object.prototype)
