@@ -56,9 +56,22 @@
     position: relative !important;
     z-index: 1;
 }
+
+.arrayOutput,
+.objectOutput {
+    font-style:italic;
+}
+
 .js-console .objectKey{
     word-break: normal;
 }
+.js-console .objectKeySymbol{
+    word-break: normal;
+}
+.js-console .objectSymbol{
+    word-break: normal;
+}
+
 summary.js-console{
     outline: none;
 }
@@ -228,8 +241,6 @@ details.js-console, summary.js-console{
 .js-console.dark .js-console.outputLine.info .plainText{
     color: rgb(63, 153, 200);
 }
-
-
 
 
 
