@@ -1,30 +1,33 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <script src="/libraries/jQuery.js"></script>
-        <script src="/libraries/Ace/build/ace.js"></script>
-        <script src="/console.js"></script>
-        <script src="jsConsole.sf.js"></script>
-        <link rel="stylesheet" href="/console.css" type="text/css" />
-        
-        <style>
-            html, body{
-                margin: 0px;
-                width: 100%;
-                height: 100%;
-            }
-            .console{
-                width: 800px;
-                height: 50%;
-            }
-        </style>
-        <script>
-            $(function(){
-                var con = $(".console").jsConsole({});
-                con.info("This is an console interface for javascript code running in a worker.\nTry out any javascript code you would usually type in the chrome console!");
-            });
-        </script>
-    </head>
-    <div class=console></div>
+
+<head>
+    <script src="../../libraries/jQuery.js"></script>
+    <script src="../../libraries/Ace/build/ace.js"></script>
+    <script src="../../console.js"></script>
+    <script src="jsConsole.sf.js"></script>
+    <link rel="stylesheet" href="../../console.css" type="text/css" />
+
+    <style>
+        html,
+        body {
+            margin: 0px;
+            width: 100%;
+            height: 100%;
+        }
+
+        .console {
+            width: 800px;
+            height: 50%;
+        }
+    </style>
+    <script>
+        $(function () {
+            var con = $(".console").jsConsole({});
+            con.info("This is an console interface for javascript code running in a worker.\nTry out any javascript code you would usually type in the chrome console!");
+        });
+    </script>
+</head>
+<div class=console></div>
+
 </html>
-  

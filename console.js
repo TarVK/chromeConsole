@@ -1,7 +1,17 @@
+// Symbol polyfill for IE
+if (!Array.from)
+    Array.from = function(inp) {
+        var ar = [];
+        for (var i = 0; i < inp.length; i++) {
+            ar.push(inp[i]);
+        }
+        return ar;
+    };
+
 (function() {
     var Range = ace.require("ace/range").Range;
     var log = console.log.bind(console); //for debugging, as I have variables called console
-    var fileRegex = /((?:https?:\/\/|www\.)(?:[^:\/]+\/)*([^:\/]+)*)(?::(\d*))?(?::(\d*))?/;
+    var fileRegex = /((?:https?:\/\/|www\.)(?:(?:[^\.\:])*(?:\.|\:))(?:[^:\/]+\/)*([^:\/]+)*)(?::(\d*))?(?::(\d*))?/; // extracts the line number at the end of a file in an error log
     var evalFileRegex = /\((((?:[^):\/]+\/)*([^):\/]+)*)(?::(\d*))?(?::(\d*))?)/;
     var htmlEscape = function(text, format) {
         if (typeof text == "symbol") text = text.toString();
@@ -31,16 +41,16 @@
     var maxStringPreviewLength = 30; //characters
     var inputCodeTemplate =
         "<div class='js-console inputLine'>" +
-        "<div class='js-console inputArrow'></div>" +
-        "<div class='js-console inputCode'></div>" +
-        "<div style=clear:both></div>" +
-        "</div>";
+            "<div class='js-console inputArrow'></div>" +
+            "<div class='js-console inputCode'></div>" +
+            "<div style=clear:both></div>" +
+        "</div>"; //prettier-ignore
     var outputTemplate =
         "<div class='js-console outputLine'>" +
-        "<div class='js-console outputIcon'></div>" +
-        "<div class='js-console outputData'></div>" +
-        "<div style=clear:both></div>" +
-        "</div>";
+            "<div class='js-console outputIcon'></div>" +
+            "<div class='js-console outputData'></div>" +
+            "<div style=clear:both></div>" +
+        "</div>"; //prettier-ignore
     var consoleTemplate =
         "<div class='js-console output'>" +
         "</div>" +
@@ -61,75 +71,59 @@
     var func = "<span class=''>f</span>" + lBrack + rBrack;
     function getNumericText(val, clas) {
         return (
-            "<span class='" +
-            (clas || "") +
-            " ace_constant ace_numeric'>" +
-            htmlEscape(val.toString()) +
+            "<span class='" + (clas || "") +" ace_constant ace_numeric'>" +
+                htmlEscape(val.toString()) +
             "</span>"
-        );
+        ); //prettier-ignore
     }
     function getStringText(val, clas) {
         return (
-            "<span class='" +
-            (clas || "") +
-            " ace_string'>" +
-            htmlEscape(val.toString()) +
+            "<span class='" + (clas || "") + " ace_string'>" +
+                htmlEscape(val.toString()) +
             "</span>"
-        );
+        ); //prettier-ignore
     }
     function getRegexText(val, clas) {
         return (
-            "<span class='" +
-            (clas || "") +
-            " ace_string'>" +
-            htmlEscape(val.toString()) +
+            "<span class='" + (clas || "") + " ace_string'>" +
+                htmlEscape(val.toString()) +
             "</span>"
-        );
+        ); //prettier-ignore
     }
     function getBooleanText(val, clas) {
         return (
-            "<span class='" +
-            (clas || "") +
-            " ace_constant ace_language ace_boolean'>" +
-            htmlEscape(val.toString()) +
+            "<span class='" + (clas || "") + " ace_constant ace_language ace_boolean'>" +
+                htmlEscape(val.toString()) +
             "</span>"
-        );
+        ); //prettier-ignore
     }
     function getErrorText(val, clas) {
         return (
-            "<span class='" +
-            (clas || "") +
-            " errorText'>" +
-            htmlEscape(val.toString()) +
+            "<span class='" + (clas || "") + " errorText'>" +
+                htmlEscape(val.toString()) +
             "</span>"
-        );
+        ); //prettier-ignore
     }
     function getKeyText(val, clas) {
         return (
-            "<span class='" +
-            (clas || "") +
-            " objectKey ace_constant ace_language'>" +
-            htmlEscape(val.toString()) +
+            "<span class='" + (clas || "") + " objectKey ace_constant ace_language'>" +
+                htmlEscape(val.toString()) +
             "</span>"
-        );
+        ); //prettier-ignore
     }
     function getSymbolText(val, clas) {
         return (
-            "<span class='" +
-            (clas || "") +
-            " objectSymbol ace_string ace_language'>" +
-            htmlEscape(val.toString()) +
+            "<span class='" + (clas || "") + " objectSymbol ace_string ace_language'>" +
+                htmlEscape(val.toString()) +
             "</span>"
-        );
+        ); //prettier-ignore
     }
     function getKeySymbolText(val, clas) {
         return (
-            "<span class='" +
-            (clas || "") +
-            " objectKeySymbol ace_constant ace_language'>" +
-            htmlEscape(val.toString()) +
+            "<span class='" + (clas || "") + " objectKeySymbol ace_constant ace_language'>" +
+                htmlEscape(val.toString()) +
             "</span>"
-        );
+        ); //prettier-ignore
     }
 
     //some util functions
@@ -148,15 +142,44 @@
         return editor;
     }
     function createCollapseEl(clas, parClass) {
-        return $(
-            "<details class='js-console " +
-                (parClass || "") +
-                "'>" +
-                "<summary class='js-console " +
-                clas +
-                "'></summary>" +
-                "</details>"
-        );
+        var element = $(
+            "<span class='js-console-collapsible js-console " + (parClass || "") +"'>" +
+                "<div class='js-console-collapsible header-outer js-console'>"+
+                    "<span class='js-console header-arrow'></span>"+
+                    "<div class='js-console-collapsible header js-console " + clas +"'></div>" +
+                "</div>" +
+                "<br>"+
+                "<div class='js-console-collapsible content js-console " +clas +"' style=display:none></div>" +
+            "</span>"
+        ); // prettier-ignore
+        element
+            .find(".header-outer")
+            .first()
+            .mouseup(function(e) {
+                if (e.button == 0) {
+                    e.preventDefault();
+                    if (!element.is(".open")) {
+                        element
+                            .addClass("open")
+                            .find(".content")
+                            .first()
+                            .show();
+                    } else {
+                        element
+                            .removeClass("open")
+                            .find(".content")
+                            .first()
+                            .hide();
+                    }
+                }
+            })
+            .mousedown(function(e) {
+                // Remove double click text selection: https://stackoverflow.com/a/43321596
+                if (e.button == 0 && e.detail > 1) {
+                    e.preventDefault();
+                }
+            });
+        return element;
     }
     function specialObj(obj) {
         return (
@@ -176,15 +199,15 @@
 
             out.el = createCollapseEl("");
             out.el
-                .find("summary")
+                .find(".header")
                 .append(file.replace(/%20/g, " ") + lineNumber);
-            out.el.append(
-                "<a href='" +
-                    fileMatch[1] +
-                    "'>" +
-                    fileMatch[0].replace(/%20/g, " ") +
+            out.el
+                .children(".content")
+                .append(
+                    "<a href='" + fileMatch[1] + "'>" +
+                        fileMatch[0].replace(/%20/g, " ") +
                     "</a>"
-            );
+                ); // prettier-ignore
             out.match = fileMatch;
             out.start = fileMatch.index;
             out.end = out.start + fileMatch[0].length;
@@ -195,9 +218,11 @@
 
             out.el = createCollapseEl("");
             out.el
-                .find("summary")
+                .find(".header")
                 .append(file.replace(/%20/g, " ") + lineNumber);
-            out.el.append(evalFileMatch[1].replace(/%20/g, " "));
+            out.el
+                .children(".content")
+                .append(evalFileMatch[1].replace(/%20/g, " "));
             out.match = evalFileMatch;
             out.end = evalFileMatch.index + evalFileMatch[0].length;
             out.start = out.end - evalFileMatch[1].length;
@@ -241,14 +266,13 @@
         if (this.data instanceof Error) {
             if (!this.element) {
                 this.element = createCollapseEl("errorMessage", "errorOutput");
-                this.element.find("summary").append(getErrorText(this.data));
+                this.element.find(".header").append(getErrorText(this.data));
                 var errorStack = htmlEscape(this.data.stack, false);
                 var errorLines = errorStack.split("\n");
                 errorLines.shift(); //first line isn't needed
                 errorLines.forEach(function(line) {
-                    var match = line.match(fileRegex);
                     var lineEl = $("<span>");
-                    This.element.append(lineEl);
+                    This.element.children(".content").append(lineEl);
                     var file = getFileLocationElement(line, "errorLocation");
                     if (file) {
                         lineEl.append(
@@ -294,7 +318,8 @@
                     } else this.previewElement = this.createObjectName(0);
                 }
                 this.element
-                    .find("summary")
+                    .find(".header")
+                    .first()
                     .html("")
                     .append(this.previewElement);
             }
@@ -302,36 +327,31 @@
                 this.createObjectData();
             } else if (newElement) {
                 this.element
-                    .find("summary")
+                    .find(".header-outer")
                     .first()
                     .click(function(e) {
-                        var opens = !$(this)
-                            .parent()
-                            .is("[open]");
+                        var opens = This.element.is(".open");
                         if (opens) {
                             This.getElement();
+                            if (!specialObj(This.data))
+                                This.element
+                                    .find(".header")
+                                    .first()
+                                    .html(This.prefix);
                         } else {
-                            This.element.children(":not(summary)").remove();
+                            This.element.children(".content").html("");
+                            if (!specialObj(This.data))
+                                This.element
+                                    .find(".header")
+                                    .first()
+                                    .html(This.previewElement);
                         }
-
-                        if (!specialObj(This.data))
-                            setTimeout(function() {
-                                if (opens) {
-                                    This.element
-                                        .children("summary")
-                                        .html(This.prefix);
-                                } else {
-                                    This.element
-                                        .children("summary")
-                                        .html("")
-                                        .append(This.previewElement);
-                                }
-                            });
                     });
             }
         } else {
             if (!this.element) this.element = $(this.getNonObjectData());
         }
+        console.log(this.data);
 
         if (!hadElement && this.element) {
             this.element[0].data = this;
@@ -350,72 +370,72 @@
         if (typeof this.data == "number")
             return (
                 "<span class='numberOutput'>" +
-                this.prefix +
-                getNumericText(this.data, "value") +
+                    this.prefix + getNumericText(this.data, "value") +
                 "</span>"
-            );
+            ); //prettier-ignore
         else if (typeof this.data == "string") {
             var text = this.data;
             if (preview && text.length > maxStringPreviewLength)
                 text = text.substring(0, maxStringPreviewLength - 3) + "...";
             // return "<span class='stringOutput'>"+this.prefix+getStringText('"'+text+'"', "value")+"</span>";
             return (
-                "<span class='stringOutput'><table><tr>" +
-                "<td>" +
-                this.prefix +
-                "</td>" +
-                "<td class=indent>" +
-                getStringText('"' + text + '"', "value") +
-                "</td>" +
+                "<span class='stringOutput'><table><tr>" + 
+                    "<td>" +
+                        this.prefix +
+                    "</td>" +
+                    "<td class=indent>" +
+                        getStringText('"' + text + '"', "value") +
+                    "</td>" +
                 "</tr></table></span>"
-            );
+            ); //prettier-ignore
         } else if (typeof this.data == "boolean")
             return (
                 "<span class='undefinedOutput'>" +
-                this.prefix +
-                getBooleanText(this.data, "value") +
+                    this.prefix + getBooleanText(this.data, "value") +
                 "</span>"
-            );
+            ); //prettier-ignore
         else if (typeof this.data == "function")
             return (
-                "<span class='functionOutput'>" + this.prefix + func + "</span>"
-            );
+                "<span class='functionOutput'>" + 
+                    this.prefix + func + 
+                "</span>"
+            ); //prettier-ignore
         else if (this.data instanceof RegExp)
             return (
                 "<span class='regexOutput'>" +
-                this.prefix +
-                getRegexText(this.data, "value") +
+                    this.prefix + getRegexText(this.data, "value") +
                 "</span>"
-            );
+            ); //prettier-ignore
         else if (this.data === null)
-            return "<span class='nullOutput'>" + this.prefix + nul + "</span>";
+            return (
+                "<span class='nullOutput'>" + 
+                    this.prefix + nul + 
+                "</span>"
+            ); //prettier-ignore
         else if (this.data === undefined)
             return (
                 "<span class='undefinedOutput'>" +
-                this.prefix +
-                undef +
+                    this.prefix + undef +
                 "</span>"
-            );
+            ); //prettier-ignore
         else if (this.data instanceof Error)
             return (
                 "<span class='errorOutput'>" +
-                this.prefix +
-                getErrorText(this.data) +
+                    this.prefix + getErrorText(this.data) +
                 "</span>"
-            );
+            ); //prettier-ignore
         else if (typeof this.data == "symbol")
             return (
                 "<span class='symbol'>" +
-                this.prefix +
-                getSymbolText(this.data) +
+                    this.prefix + getSymbolText(this.data) +
                 "</span>"
-            );
+            ); //prettier-ignore
         return "<span class='rawOutput'>" + this.prefix + this.data + "</span>";
     };
     DataObject.prototype.createObjectData = function() {
         var keys = Object.getOwnPropertyNames(this.data);
         //Symbols are still not universally supported. But if they do exist, include in output
-        if (window.Symbol)
+        if (Object.getOwnPropertySymbols)
             keys = keys.concat(Object.getOwnPropertySymbols(this.data));
         if (this.data && this.data.__proto__ != Object.prototype)
             keys.push("__proto__");
@@ -434,22 +454,24 @@
                 if (key == "__proto__")
                     dObj.getterObj = this.getterObj || this.data;
 
-                this.element.append(
-                    dObj.getElement(
-                        typeof key == "symbol"
-                            ? getKeySymbolText(key) + colon + " "
-                            : getKeyText(key) + colon + " ",
-                        1
-                    )
-                );
-                if (i < keys.length - 1) this.element.append($("<br>"));
+                this.element
+                    .children(".content")
+                    .append(
+                        dObj.getElement(
+                            (typeof key == "symbol" ? getKeySymbolText(key) : getKeyText(key)) + colon + " ",
+                            1
+                        )
+                    ); //prettier-ignore
+
+                if (i < keys.length - 1)
+                    this.element.children(".content").append($("<br>"));
             } catch (e) {}
         }
     };
     DataObject.prototype.createObjectName = function(depth) {
         var keys = Object.keys(this.data);
         //Symbols are still not universally supported. But if they do exist, include in output
-        if (window.Symbol)
+        if (Object.getOwnPropertySymbols)
             keys = keys.concat(Object.getOwnPropertySymbols(this.data));
         var isArray = this.data instanceof Array;
         var maxLength = maxObjectPreviewLength;
@@ -801,7 +823,8 @@
     Console.prototype.time = function(label) {
         var now = new Date();
         if (!this.timers) this.timers = {};
-        this.timers[label || "default"] = now;
+        if (!label || typeof label != "string") label = "default";
+        this.timers[label] = now;
     };
     Console.prototype.timeEnd = function(label) {
         var now = new Date();
