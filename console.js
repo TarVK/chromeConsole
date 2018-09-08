@@ -4,6 +4,7 @@
     var fileRegex = /((?:https?:\/\/|www\.)(?:[^:\/]+\/)*([^:\/]+)*)(?::(\d*))?(?::(\d*))?/;
     var evalFileRegex = /\((((?:[^):\/]+\/)*([^):\/]+)*)(?::(\d*))?(?::(\d*))?)/;
     var htmlEscape = function(text, format){
+        if(typeof(text) == "symbol") text = text.toString();
         text = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
         if(format===false) return text; //explicit false
         if(!format) return text.replace(/\n/g, "&crarr;"); //not defined
@@ -62,6 +63,12 @@
     }
     function getKeyText(val, clas){
         return "<span class='"+(clas||"")+" objectKey ace_constant ace_language'>"+htmlEscape(val.toString())+"</span>";
+    }
+    function getSymbolText(val, clas){
+        return "<span class='"+(clas||"")+" objectSymbol ace_string ace_language'>"+htmlEscape(val.toString())+"</span>";
+    }
+    function getKeySymbolText(val, clas){
+        return "<span class='"+(clas||"")+" objectKeySymbol ace_constant ace_language'>"+htmlEscape(val.toString())+"</span>";
     }
     
     //some util functions
@@ -250,10 +257,14 @@
             return "<span class='undefinedOutput'>"+this.prefix+undef+"</span>";
         else if((this.data) instanceof Error)
             return "<span class='errorOutput'>"+this.prefix+getErrorText(this.data)+"</span>";
+        else if(typeof(this.data)=="symbol")
+            return "<span class='symbol'>"+this.prefix+getSymbolText(this.data)+"</span>";
         return "<span class='rawOutput'>"+this.prefix+this.data+"</span>";
     };
     DataObject.prototype.createObjectData = function(){
-        var keys = Object.getOwnPropertyNames(this.data);
+        var keys = Object.getOwnPropertyNames(this.data)
+        //Symbols are still not universally supported. But if they do exist, include in output
+        if (window.Symbol) keys = keys.concat(Object.getOwnPropertySymbols(this.data)); 
         if(this.data && this.data.__proto__!=Object.prototype)
             keys.push("__proto__");
         for(var i=0; i<keys.length; i++){
@@ -268,13 +279,15 @@
                 var dObj = new DataObject(obj, this.outputLineData, this, key);
                 if(key=="__proto__") dObj.getterObj = this.getterObj||this.data;
                 
-                this.element.append(dObj.getElement(getKeyText(key)+colon+" ", 1));
+                this.element.append(dObj.getElement(typeof(key)=="symbol" ? getKeySymbolText(key)+colon+" " : getKeyText(key)+colon+" ", 1));
                 if(i<keys.length-1) this.element.append($("<br>"));
             }catch(e){} 
         }
     };
     DataObject.prototype.createObjectName = function(depth){
         var keys = Object.keys(this.data);
+        //Symbols are still not universally supported. But if they do exist, include in output
+        if (window.Symbol) keys = keys.concat(Object.getOwnPropertySymbols(this.data)); 
         var isArray = (this.data) instanceof Array;
         var maxLength = maxObjectPreviewLength;
         var previewEl = $("<span></span>");
