@@ -672,8 +672,8 @@ if (!Array.from)
         //FIX: "Input element isn't focussed when clicking in the history element #5"
         var ThisConsole=this;
         el.find("*").click(function(e){
-            if(editor.getSelectedText()=="") ThisConsole.inputEditor.focus()
-        })
+            if(editor.getSelectedText()=="") ThisConsole.inputEditor.focus();
+        });
 
         var dataObj = {
             text: text,
