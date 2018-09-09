@@ -1,56 +1,59 @@
-.js-console.root{
+.js-console.root {
     word-break: break-word;
     overflow-y: scroll;
-    font: 12px/normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+    font: 12px / normal "Monaco", "Menlo", "Ubuntu Mono", "Consolas",
+        "source-code-pro", monospace;
 }
 
-
 /*input*/
-.js-console.inputArrow{
+.js-console.inputArrow {
     float: left;
     width: 20px;
 }
-.js-console.inputArrow:after{
+.js-console.inputArrow:after {
     font-family: "consolas";
     padding-left: 5px;
     content: ">";
 }
-.js-console.inputCode{
+.js-console.inputCode {
     float: left;
     width: calc(100% - 20px);
 }
-.js-console.inputCode.input{
+.js-console.inputCode.input {
     margin-bottom: 10px;
 }
-.ace_marker-layer .ace_active-line{
+.ace_marker-layer .ace_active-line {
     background: none !important;
 }
 
 /*output*/
-.js-console .ace_gutter-cell{
+.js-console .ace_gutter-cell {
     padding-left: 0;
     padding-right: 0;
 }
-.js-console.outputIcon{
+.js-console.output {
+    overflow-x: hidden;
+}
+.js-console.outputIcon {
     float: left;
     min-width: 24px;
     min-height: 5px;
     padding-right: 5px;
     box-sizing: border-box;
 }
-.js-console.return .outputIcon:after{
+.js-console.return .outputIcon:after {
     font-family: "consolas";
     padding-left: 5px;
     content: "<";
 }
-.js-console.outputData{
+.js-console.outputData {
     float: left;
     width: calc(100% - 24px);
 }
-.js-console.outputData>*{
+.js-console.outputData > * {
     margin-right: 20px;
 }
-.ace_print-margin{
+.ace_print-margin {
     width: 100% !important;
     height: 1px;
     position: relative !important;
@@ -59,66 +62,98 @@
 
 .arrayOutput,
 .objectOutput {
-    font-style:italic;
+    font-style: italic;
+}
+.js-console-collapsible.content,
+.js-console-collapsible.content .arrayOutput,
+.js-console-collapsible.content .objectOutput {
+    font-style: normal;
 }
 
-.js-console .objectKey{
+.js-console .objectKey {
     word-break: normal;
 }
-.js-console .objectKeySymbol{
+.js-console .objectKeySymbol {
     word-break: normal;
 }
-.js-console .objectSymbol{
+.js-console .objectSymbol {
     word-break: normal;
 }
 
-summary.js-console{
-    outline: none;
-}
-details.js-console > *:not(summary){
-    margin-left: 23px;
-}
-details.js-console > details{
-    margin-left: 10px;
-}
-.errorOutput.js-console > details{
-    margin-left: 0px;
-}
-details.js-console, summary.js-console{
+/* spoiler styling */
+.js-console.header-arrow {
     display: inline-block;
+    width: 0px;
+    height: 0px;
+    vertical-align: middle;
+    border-left: solid 7px black;
+    border-top: solid 4px transparent;
+    border-bottom: solid 4px transparent;
+}
+.js-console-collapsible {
+    display: inline-block;
+    width: fit-content;
     vertical-align: top;
+    word-wrap: keep-all;
+    white-space: nowrap;
+}
+.js-console-collapsible.open
+    > .js-console-collapsible.header-outer
+    > .header-arrow {
+    border-bottom: none;
+    border-top: solid 7px black;
+    border-left: solid 4px transparent;
+    border-right: solid 4px transparent;
+}
+.js-console-collapsible.header {
+    width: calc(100% - 14px);
+    display: inline-block;
+    margin-left: 5px;
+    vertical-align: middle;
+    width: fit-content;
+}
+.js-console-collapsible.open
+    > .js-console-collapsible.header-outer
+    > .js-console-collapsible.header {
+    margin-left: 4px;
+}
+.js-console-collapsible.content {
+    margin-left: 15px;
+}
+.js-console-collapsible.content > *:not(.js-console-collapsible) {
+    margin-left: 12px;
 }
 
 /*fix string indent*/
-.js-console details>.stringOutput>table{
-    padding-left: 23px;
-}
-.js-console .stringOutput{
+.js-console .stringOutput {
     margin-left: 0px;
+    word-wrap: normal;
+    white-space: normal;
 }
-.js-console .stringOutput table{
+.js-console .stringOutput table {
     display: inline-block;
     vertical-align: text-bottom;
     font-size: 12px;
 }
-.js-console .stringOutput table, .js-console .stringOutput tbody{
+.js-console .stringOutput table,
+.js-console .stringOutput tbody {
     border-spacing: 0;
     border-collapse: collapse;
 }
-.js-console .stringOutput td{
+.js-console .stringOutput td {
     vertical-align: top;
     padding: 0px;
 }
-.js-console .stringOutput td:first-child:not(:empty){
+.js-console .stringOutput td:first-child:not(:empty) {
     padding-right: 7px;
 }
-.js-console .stringOutput td.indent{
+.js-console .stringOutput td.indent {
     padding-left: 15px;
     text-indent: -15px;
 }
 
 /*logging*/
-.js-console.outputLine.log .outputIcon.number{
+.js-console.outputLine.log .outputIcon.number {
     padding-left: 5px;
     min-width: 20px;
     max-height: 16px;
@@ -129,20 +164,20 @@ details.js-console, summary.js-console{
 }
 
 /*line numbers*/
-.js-console .lineNumber{
+.js-console .lineNumber {
     float: right;
     text-align: right;
     text-decoration: underline;
 }
-.js-console .lineNumber>:not(a){ 
+.js-console .lineNumber > :not(a) {
     text-decoration: none; /*shouldn't carry by default, on chrome at least*/
 }
-.js-console .lineNumber>summary{
+.js-console .lineNumber > summary {
     text-decoration: underline;
 }
 
 /*output custom color styling*/
-.js-console a{
+.js-console a {
     color: rgb(0, 0, 255) !important;
 }
 
@@ -152,45 +187,44 @@ details.js-console, summary.js-console{
 ###################
 */
 /*log*/
-.js-console.light .js-console.outputLine.log .outputIcon.number{
-    color: #FFFFFF;
+.js-console.light .js-console.outputLine.log .outputIcon.number {
+    color: #ffffff;
     background-color: rgba(0, 0, 0, 0.5);
 }
 
 /*error*/
-.js-console.light .errorText{
+.js-console.light .errorText {
     color: rgb(245, 0, 0);
 }
-.js-console.light .js-console.errorOutput>* :not(summary):not(details){
+.js-console.light .js-console.errorOutput > * :not(summary):not(details) {
     color: rgb(245, 0, 0);
 }
-.js-console.light .js-console.outputLine.error{
+.js-console.light .js-console.outputLine.error {
     border-top: 1px solid rgba(255, 0, 0, 0.2);
     border-bottom: 1px solid rgba(255, 0, 0, 0.2);
     background-color: rgba(255, 0, 0, 0.15);
 }
-.js-console.light .js-console.outputLine.error .plainText{
+.js-console.light .js-console.outputLine.error .plainText {
     color: rgb(250, 60, 65);
 }
 /*warn*/
-.js-console.light .js-console.outputLine.warn{
+.js-console.light .js-console.outputLine.warn {
     border-top: 1px solid rgba(255, 225, 55, 0.5);
     border-bottom: 1px solid rgba(255, 225, 55, 0.5);
     background-color: rgba(255, 225, 55, 0.3);
 }
-.js-console.light .js-console.outputLine.warn .plainText{
-    color:rgb(95, 95, 0);
+.js-console.light .js-console.outputLine.warn .plainText {
+    color: rgb(95, 95, 0);
 }
 /*info*/
-.js-console.light .js-console.outputLine.info{
+.js-console.light .js-console.outputLine.info {
     border-top: 1px solid rgba(0, 0, 255, 0.3);
     border-bottom: 1px solid rgba(0, 0, 255, 0.3);
     background-color: rgba(55, 55, 255, 0.2);
 }
-.js-console.light .js-console.outputLine.info .plainText{
+.js-console.light .js-console.outputLine.info .plainText {
     color: rgb(0, 0, 60);
 }
-
 
 /*
 ###################
@@ -198,56 +232,48 @@ details.js-console, summary.js-console{
 ###################
 */
 /*log*/
-.js-console.dark .js-console.outputLine.log .outputIcon.number{
+.js-console.dark .js-console.outputLine.log .outputIcon.number {
     color: #272822;
     background-color: rgba(255, 255, 255, 0.5);
 }
 
-
-
 /*error*/
-.js-console.dark .errorText{
+.js-console.dark .errorText {
     color: rgb(243, 88, 88);
 }
-.js-console.dark .js-console.errorOutput>* :not(summary):not(details){
+.js-console.dark .js-console.errorOutput > * :not(summary):not(details) {
     color: rgb(243, 88, 88);
 }
-.js-console.dark .js-console.outputLine.error{
+.js-console.dark .js-console.outputLine.error {
     border-top: 1px solid rgba(195, 0, 0, 0.3);
     border-bottom: 1px solid rgba(195, 0, 0, 0.3);
     background-color: rgba(195, 0, 0, 0.15);
 }
-.js-console.dark .js-console.outputLine.error .plainText{
+.js-console.dark .js-console.outputLine.error .plainText {
     color: rgb(243, 88, 88);
 }
 
 /*dark warn*/
-.js-console.dark .js-console.outputLine.warn{
+.js-console.dark .js-console.outputLine.warn {
     border-top: 1px solid rgba(255, 225, 55, 0.3);
     border-bottom: 1px solid rgba(255, 225, 55, 0.3);
     background-color: rgba(195, 195, 0, 0.2);
 }
-.js-console.dark .js-console.outputLine.warn .plainText{
-    color:rgb(200, 200, 7);
+.js-console.dark .js-console.outputLine.warn .plainText {
+    color: rgb(200, 200, 7);
 }
 
-
 /*dark info*/
-.js-console.dark .js-console.outputLine.info{
+.js-console.dark .js-console.outputLine.info {
     border-top: 1px solid rgba(70, 70, 230, 0.4);
     border-bottom: 1px solid rgba(70, 70, 230, 0.4);
     background-color: rgba(50, 100, 195, 0.1);
 }
-.js-console.dark .js-console.outputLine.info .plainText{
+.js-console.dark .js-console.outputLine.info .plainText {
     color: rgb(63, 153, 200);
 }
 
-
-
-
-
-
 /* Compatibility - Safari*/
 summary.js-console.objectOutput {
-    display:block;
+    display: block;
 }
