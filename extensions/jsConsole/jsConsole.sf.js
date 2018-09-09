@@ -321,7 +321,7 @@ if (isWorker)
         console.error = console.print.bind(console, "error", 0);
         console.warn = console.print.bind(console, "warn", 0);
         console.info = console.print.bind(console, "info", 0);
-        // console.log = console.print.bind(console, "log", 0);
+        console.log = console.print.bind(console, "log", 0);
         console.time = console.print.bind(console, "time", 0);
         console.timeEnd = console.print.bind(console, "timeEnd", 0);
         console.clear = function() {
