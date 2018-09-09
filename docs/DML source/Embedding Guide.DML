@@ -41,7 +41,7 @@
     [link url="About.html"          ][button]About          [/button][/link]
     [link url="Embedding Guide.html"][button]Embedding Guide[/button][/link]
     [link url="API Reference.html"  ][button]API Reference  [/button][/link]
-    [link url="https://github.com/TarVK/chromeConsole/tree/version-1.0"][button]Source Code[/button][/link]
+    [link url="https://github.com/TarVK/chromeConsole/tree/master"][button]Source Code[/button][/link]
 [/siteBrowser]
 
 [linkDictionary]

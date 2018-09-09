@@ -1,55 +1,59 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.9/ace.js"></script>
-        <script src="https://rawgit.com/TarVK/chromeConsole/version-1.0/console.js"></script>
-        <script src="https://rawgit.com/TarVK/chromeConsole/version-1.0/extensions/jsConsole/jsConsole.sf.js"></script>
-        <link rel="stylesheet" href="https://rawgit.com/TarVK/chromeConsole/version-1.0/console.css" type="text/css" />
-        
-        <style>
-            html, body{
-                width: 100%;
-                height: 100%;
-                margin: 0px;
+
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.9/ace.js"></script>
+    <script src="https://rawgit.com/TarVK/chromeConsole/version-1.0/console.js"></script>
+    <script src="https://rawgit.com/TarVK/chromeConsole/version-2.0/extensions/jsConsole/jsConsole.sf.js"></script>
+    <link rel="stylesheet" href="https://rawgit.com/TarVK/chromeConsole/version-2.0/console.css" type="text/css" />
+
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+        }
+
+        .console {
+            height: calc(100% - 2px);
+            border: 1px solid #CCC;
+            width: calc(100% - 2px);
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+    <script>
+        var workerURL = "https://cdn.rawgit.com/TarVK/chromeConsole/version-2.0/extensions/jsConsole/jsConsole.sf.js";
+        $(function () {
+            //var cons = $(".console").workerJsConsole({worker:"some/relative/location/jsConsole.sf.js"});
+            var cons = $(".console").jsConsole({ worker: getWorker() });
+
+            cons.info("Type javascript here!");
+        });
+
+        //Due to a limitation where you cannot instantiate a worker from a foreign url.
+        function getWorker() {
+            var req = new XMLHttpRequest();
+            req.open("GET", workerURL, false);
+            req.send();
+            var blob;
+            try {
+                blob = new Blob([req.responseText], { type: 'application/javascript' });
+            } catch (e) { // Backwards-compatibility
+                window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
+                blob = new BlobBuilder();
+                blob.append(req.responseText);
+                blob = blob.getBlob();
             }
-            .console{
-                height: calc(100% - 2px);
-                border: 1px solid #CCC;
-                width: calc(100% - 2px);
-                max-width: 800px;
-                margin-left: auto;
-                margin-right: auto;
-            }
-        </style>
-        <script>
-            var workerURL = "https://cdn.rawgit.com/TarVK/chromeConsole/version-1.0/extensions/jsConsole/jsConsole.sf.js";
-            $(function(){
-                //var cons = $(".console").workerJsConsole({worker:"some/relative/location/jsConsole.sf.js"});
-                var cons = $(".console").jsConsole({worker:getWorker()});
-                
-                cons.info("Type javascript here!");
-            });
-            
-            //Due to a limitation where you cannot instantiate a worker from a foreign url.
-            function getWorker(){
-                var req = new XMLHttpRequest();
-                req.open("GET", workerURL, false);
-                req.send();
-                var blob;
-                try{
-                    blob = new Blob([req.responseText], {type: 'application/javascript'});
-                }catch(e){ // Backwards-compatibility
-                    window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
-                    blob = new BlobBuilder();
-                    blob.append(req.responseText);
-                    blob = blob.getBlob();
-                }
-                return URL.createObjectURL(blob);
-            }
-        </script>
-    </head>
-    <div class=console>
-        
-    </div>
+            return URL.createObjectURL(blob);
+        }
+    </script>
+</head>
+<div class=console>
+
+</div>
+
 </html>
