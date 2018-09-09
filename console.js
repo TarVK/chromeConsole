@@ -613,11 +613,7 @@ if (!Array.from)
             }
             el.addClass("ace-" + data.theme + " " + data.style);
             el.click(function(e) {
-                if (
-                    $(e.target).is(
-                        ".js-console.root,.js-console.root>.inputLine"
-                    )
-                )
+                if (window.getSelection().toString() == "")
                     This.inputEditor.focus();
             });
 
