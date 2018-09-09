@@ -14,11 +14,13 @@ var extendedJSON = (function() {
             RegExp,
             "regex",
             function(obj) {
-                return obj.toString();
+                return obj.toString() + "/" + obj.lastIndex;
             },
             function(data) {
-                var m = data.match(/\/(.*)\/(.*)/);
-                return new RegExp(m[1], m[2]);
+                var m = data.match(/\/(.*)\/(.*)\/(.*)/);
+                var regex = new RegExp(m[1], m[2]);
+                regex.lastIndex = Number(m[3]);
+                return regex;
             }
         ],
         [
@@ -45,7 +47,6 @@ var extendedJSON = (function() {
             },
             function(data) {
                 var obj = JSON.parse(data);
-                console.log(obj);
                 var error = new window[obj.type](obj.message);
                 error.stack = obj.stack;
                 return error;
@@ -64,9 +65,8 @@ var extendedJSON = (function() {
         var m = val.match(/^(\w+):([^]*)$/);
         return [m[1], m[2]];
     };
-    out.encode = function(obj, encodeAll, getterObj, path, symbol) {
+    out.encode = function(obj, encodeAll, getterObj, path) {
         path = path || "root";
-        if (!symbol) symbol = Symbol("lastConvertIdentifier");
         getterObj = getterObj || obj; //getterObj is the objet that the proto is in the descedents of
 
         if (obj === null || obj === undefined) {
@@ -92,7 +92,6 @@ var extendedJSON = (function() {
             if (!(obj instanceof Array) && encodeAll) keys.push("__proto__");
 
             obj[out.pathSymbol] = path;
-            obj[out.convertingSymbol] = symbol;
             var index = 0;
             for (var i = 0; i < keys.length; i++) {
                 var key = keys[i];
@@ -109,7 +108,7 @@ var extendedJSON = (function() {
                             : null;
                     var p = o && s ? s.value : null; //use ownPropertyDescriptor, so it doesn't take the value of __proto__
 
-                    if (p != null && s && s.value == symbol) {
+                    if (p != null) {
                         ret.properties[index++] = [
                             key,
                             out.encodeVal(p, "object")
@@ -121,13 +120,13 @@ var extendedJSON = (function() {
                                 o,
                                 encodeAll,
                                 key == "__proto__" ? getterObj : null,
-                                path + "." + key,
-                                symbol
+                                path + "." + key
                             )
                         ];
                     }
                 } catch (e) {} //catch illegal invocation that tends to occur
             }
+            delete obj[out.pathSymbol];
 
             return ret;
         }

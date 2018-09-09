@@ -139,6 +139,9 @@ if (!Array.from)
         });
         editor.$blockScrolling = Infinity;
         editor.renderer.setShowGutter(false);
+        editor.on("blur", function() {
+            editor.session.selection.clearSelection();
+        });
         return editor;
     }
     function createCollapseEl(clas, parClass) {
@@ -351,7 +354,6 @@ if (!Array.from)
         } else {
             if (!this.element) this.element = $(this.getNonObjectData());
         }
-        console.log(this.data);
 
         if (!hadElement && this.element) {
             this.element[0].data = this;
@@ -612,7 +614,7 @@ if (!Array.from)
                 });
             }
             el.addClass("ace-" + data.theme + " " + data.style);
-            
+
             //FIX: "Input element isn't focussed when clicking in the history element #5"
             el.click(function(e) {
                 if (window.getSelection().toString() == "")
@@ -668,11 +670,11 @@ if (!Array.from)
         editor.setReadOnly(true);
         editor.renderer.$cursorLayer.element.style.display = "none";
         editor.setValue(text, -1);
-        
+
         //FIX: "Input element isn't focussed when clicking in the history element #5"
-        var ThisConsole=this;
-        el.find("*").click(function(e){
-            if(editor.getSelectedText()=="") ThisConsole.inputEditor.focus();
+        var ThisConsole = this;
+        el.find("*").click(function(e) {
+            if (editor.getSelectedText() == "") ThisConsole.inputEditor.focus();
         });
 
         var dataObj = {
