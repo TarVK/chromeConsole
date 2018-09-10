@@ -20,8 +20,4 @@ Or used to build handy utilities, like this utility which searches a URL for a g
 * [Ruby Console](https://github.com/sancarn/RubyConsole)
 
 ## Todo:
-* Wrap object overflow properly.
-* Make a fix for Edge (\<details\> not implemented).
-* Major browser support (e.g. Edge).
 * Make it so parameters of functions are shown
-* fix console.time()/console.timeEnd() not working properly in jsConsole without a specified label
