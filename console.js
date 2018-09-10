@@ -160,6 +160,14 @@ if (!Array.from)
             .first()
             .mouseup(function(e) {
                 if (e.button == 0) {
+                    // Store the current scroll offset
+                    var consoleEl = $(this).closest(".js-console.root");
+                    var offset =
+                        consoleEl[0].scrollHeight -
+                        consoleEl.height() -
+                        consoleEl.scrollTop();
+
+                    // Expand or collapse
                     e.preventDefault();
                     if (!element.is(".open")) {
                         element
@@ -174,6 +182,31 @@ if (!Array.from)
                             .first()
                             .hide();
                     }
+
+                    // Restore the current offset (Relative to the bottom of the element)
+                    var maxScroll =
+                        element.offset().top -
+                        consoleEl.offset().top +
+                        consoleEl.scrollTop();
+                    var minScroll =
+                        maxScroll -
+                        consoleEl.height() +
+                        element
+                            .find(".header")
+                            .first()
+                            .height();
+                    // MaxScroll and minScroll make sure the element's haeder never scrolls out of the screen
+                    consoleEl.scrollTop(
+                        Math.min(
+                            maxScroll,
+                            Math.max(
+                                minScroll,
+                                consoleEl[0].scrollHeight -
+                                    consoleEl.height() -
+                                    offset
+                            )
+                        )
+                    );
                 }
             })
             .mousedown(function(e) {
